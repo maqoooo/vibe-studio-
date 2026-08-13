@@ -1,0 +1,16 @@
+{
+  "name": "vibe-social-club-carousel",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Karuzela Instagram — VIBE SOCIAL CLUB · Rooftop Edition (1080×1350)",
+  "scripts": {
+    "start": "npx --yes http-server . -p 8080 -c-1 -o",
+    "export": "node scripts/export.mjs",
+    "export:1x": "node scripts/export.mjs --scale=1",
+    "export:jpg": "node scripts/export.mjs --jpg"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0"
+  }
+}

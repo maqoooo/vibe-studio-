@@ -1,0 +1,47 @@
+/* ============================================================
+   Widok pojedynczego slajdu otwartego bezpośrednio w przeglądarce.
+   NIE wpływa na eksport (tam używany jest tryb ?raw=1).
+   ============================================================ */
+
+body {
+  background: #16131C;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.fit-wrap { position: relative; }
+
+.fit-wrap > .slide {
+  position: absolute;
+  top: 0; left: 0;
+  transform: scale(var(--fit, 1));
+  transform-origin: top left;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .55);
+  border-radius: 4px;
+}
+
+/* tryb eksportu / osadzenia w studiu — czysty slajd 1:1 */
+body.raw {
+  background: #fff;
+  padding: 0;
+  display: block;
+  min-height: 0;
+}
+body.raw .slide {
+  transform: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* podświetlenie pól edytowalnych (włącza studio) */
+.edit-on [data-edit] {
+  outline: 1px dashed rgba(90, 160, 255, .85);
+  outline-offset: 3px;
+  cursor: text;
+}
+.edit-on [data-edit]:focus {
+  outline: 2px solid #4C8DFF;
+  background: rgba(76, 141, 255, .08);
+}

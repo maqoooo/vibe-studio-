@@ -1,0 +1,367 @@
+/* ============================================================
+   VIBE SOCIAL CLUB — STYLE SLAJDÓW
+   Każdy slajd to <section class="slide"> o wymiarze 1080x1350.
+   ============================================================ */
+
+/* ---------- SZKIELET SLAJDU ---------- */
+.slide {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  overflow: hidden;
+  font-family: var(--f-sans);
+  color: var(--c-body);
+  background: var(--cream-200);
+  isolation: isolate;
+}
+
+/* warstwa 1 — tło rysowane CSS-em (widoczne, gdy nie ma zdjęcia) */
+.slide__bg { position: absolute; inset: 0; z-index: 0; }
+
+/* warstwa 2 — Twoje zdjęcie; ustawiane przez --photo */
+.slide__photo {
+  position: absolute; inset: 0; z-index: 1;
+  background-image: var(--photo, none);
+  background-size: cover;
+  background-position: var(--photo-x, 50%) var(--photo-y, 50%);
+  transform: scale(var(--photo-zoom, 1));
+  transform-origin: center;
+}
+
+/* warstwa 3 — woal poprawiający czytelność tekstu */
+.slide__veil { position: absolute; inset: 0; z-index: 2; opacity: var(--veil, .18); }
+
+/* warstwa 4 — treść */
+.slide__content {
+  position: relative; z-index: 3;
+  height: 100%;
+  padding: var(--safe-y) var(--safe-x);
+  display: flex; flex-direction: column;
+  text-align: center;
+}
+
+/* ============================================================
+   TŁA RYSOWANE CSS-em (podmieniasz je na zdjęcia)
+   ============================================================ */
+
+/* Zachód słońca nad jeziorem — jasny */
+.bg--sunset {
+  background:
+    radial-gradient(120% 70% at 6% 58%, rgba(255,214,170,.95) 0%, rgba(255,214,170,0) 46%),
+    radial-gradient(90% 55% at 78% 18%, rgba(255,230,225,.85) 0%, rgba(255,230,225,0) 60%),
+    linear-gradient(180deg,
+      #F3E7E2 0%, #F6E4DC 22%, #F7DCD1 38%, #EFCDC2 50%,
+      #E3C6B9 57%, #D9BCAF 62%, #DCC7B9 70%, #E4D3C6 86%, #E9DACD 100%);
+}
+
+/* Rooftop o zmierzchu — ciemny */
+.bg--dusk {
+  background:
+    radial-gradient(90% 46% at 8% 46%, rgba(255,168,120,.62) 0%, rgba(255,168,120,0) 55%),
+    radial-gradient(70% 40% at 62% 20%, rgba(120,110,150,.45) 0%, rgba(120,110,150,0) 62%),
+    linear-gradient(180deg,
+      #1B2233 0%, #2A2A3D 18%, #43354A 34%, #6B4551 44%, #8A5A55 50%,
+      #5D4448 56%, #3A3038 64%, #2A252C 78%, #201C24 100%);
+}
+
+/* Poranek — pastel */
+.bg--morning {
+  background:
+    radial-gradient(100% 60% at 20% 12%, rgba(255,246,238,.95) 0%, rgba(255,246,238,0) 55%),
+    radial-gradient(80% 50% at 85% 30%, rgba(214,229,240,.75) 0%, rgba(214,229,240,0) 60%),
+    linear-gradient(180deg,
+      #DCE7EE 0%, #E8ECEE 20%, #F3E9E2 40%, #F6E6DB 55%,
+      #F2DFD3 68%, #EDD8CB 82%, #E7D2C5 100%);
+}
+
+/* Wieczór — złoto */
+.bg--golden {
+  background:
+    radial-gradient(95% 55% at 15% 62%, rgba(255,196,120,.85) 0%, rgba(255,196,120,0) 52%),
+    radial-gradient(80% 45% at 75% 16%, rgba(255,222,200,.7) 0%, rgba(255,222,200,0) 60%),
+    linear-gradient(180deg,
+      #F0DDD0 0%, #F5D9C0 20%, #F0C39C 38%, #E3AC8B 52%,
+      #DCA792 62%, #E2B7A3 76%, #EAC9B8 88%, #F0D7C8 100%);
+}
+
+/* Noc / granat — alternatywna okładka */
+.bg--night {
+  background:
+    radial-gradient(80% 50% at 50% 8%, rgba(96,150,196,.55) 0%, rgba(96,150,196,0) 60%),
+    radial-gradient(70% 40% at 20% 78%, rgba(226,206,190,.35) 0%, rgba(226,206,190,0) 55%),
+    linear-gradient(180deg,
+      #12324F 0%, #1B4468 26%, #27567D 46%, #48708C 60%,
+      #8C9A9A 72%, #C3BDB0 84%, #D9CEBE 100%);
+}
+
+/* ---------- WOALE ---------- */
+.veil--soft   { background: linear-gradient(180deg, rgba(255,248,244,.55) 0%, rgba(255,248,244,.15) 40%, rgba(255,248,244,.45) 100%); }
+.veil--deep   { background: linear-gradient(180deg, rgba(16,14,20,.72) 0%, rgba(16,14,20,.38) 42%, rgba(16,14,20,.78) 100%); }
+.veil--bottom { background: linear-gradient(180deg, rgba(255,250,246,.30) 0%, rgba(255,250,246,0) 45%, rgba(60,40,40,.35) 100%); }
+
+/* ============================================================
+   KOMPONENTY
+   ============================================================ */
+
+/* --- pasek partnerów: VIBE × NAD ZATOKĄ × TATARAK × HIGHLANDER --- */
+.logo-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 30px; color: var(--ink-900);
+}
+.logo-row__x { font-family: var(--f-sans); font-size: 20px; opacity: .5; font-weight: 300; }
+.logo { text-align: center; line-height: 1; }
+.logo__name {
+  font-family: var(--f-display);
+  font-size: 34px; font-weight: 500; letter-spacing: .10em; white-space: pre-line;
+}
+.logo__sub {
+  font-family: var(--f-sans); font-size: 12px; font-weight: 300;
+  letter-spacing: .34em; margin-top: 7px; opacity: .78;
+}
+.logo-row--light { color: var(--cream-100); }
+
+/* --- nadtytuł (wersaliki rozstrzelone) --- */
+.eyebrow {
+  font-family: var(--f-sans);
+  font-size: var(--t-small);
+  font-weight: 400;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--rose-200);
+}
+.eyebrow--ink { color: var(--ink-500); }
+.eyebrow--terra { color: var(--terracotta); }
+
+/* --- tytuły --- */
+.hero {
+  font-family: var(--f-display);
+  font-size: var(--t-hero);
+  font-weight: 300;
+  line-height: .84;
+  letter-spacing: .06em;
+  color: var(--c-title);
+}
+.hero--sm { font-size: 150px; }
+
+.h1 {
+  font-family: var(--f-display);
+  font-size: var(--t-h1);
+  font-weight: 300;
+  letter-spacing: .22em;
+  line-height: 1.02;
+  color: var(--c-title);
+}
+.h2 {
+  font-family: var(--f-sans);
+  font-size: var(--t-h2);
+  font-weight: 500;
+  letter-spacing: var(--ls-mid);
+  text-transform: uppercase;
+  color: var(--c-title);
+}
+.h3 {
+  font-family: var(--f-sans);
+  font-size: var(--t-h3);
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.script {
+  font-family: var(--f-script);
+  font-weight: 400;
+  font-size: 84px;
+  line-height: 1.1;
+  color: var(--c-title);
+}
+
+/* --- tekst --- */
+.lead {
+  font-family: var(--f-sans);
+  font-size: var(--t-lead);
+  font-weight: 300;
+  line-height: 1.62;
+  color: var(--c-body);
+}
+.body {
+  font-family: var(--f-sans);
+  font-size: var(--t-body);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--c-body);
+}
+.small { font-size: var(--t-small); font-weight: 300; line-height: 1.55; }
+.micro {
+  font-size: var(--t-micro); font-weight: 400;
+  letter-spacing: var(--ls-mid); text-transform: uppercase;
+}
+
+/* --- linia ozdobna z symbolem ---
+   Długość kresek ustawiasz zmienną --rule-len, np.
+   <div class="rule" style="--rule-len:180px">                            */
+.rule {
+  display: flex; align-items: center; justify-content: center; gap: 26px;
+  color: var(--c-line);
+}
+.rule::before, .rule::after {
+  content: ""; height: 1px; flex: 1 1 auto; max-width: var(--rule-len, 240px);
+  background: currentColor;
+}
+.rule__mark { flex: 0 0 auto; line-height: 0; color: var(--c-title); }
+.rule__mark svg { width: 34px; height: 34px; }
+
+/* --- lista rozdzielana kropkami --- */
+.dot-list {
+  font-family: var(--f-sans);
+  font-size: var(--t-body);
+  font-weight: 300;
+  line-height: 1.75;
+  letter-spacing: .02em;
+}
+.dot-list--italic { font-family: var(--f-display); font-style: italic; font-size: 34px; }
+
+/* okrągła kropka rozdzielająca — znak • bywa w różnych krojach różnej wielkości,
+   więc rysujemy ją sami, żeby zawsze wyglądała tak samo */
+.dot {
+  font-size: 0; line-height: 0;
+  display: inline-block; vertical-align: middle;
+  margin: 0 .42em;
+}
+.dot::before {
+  content: ""; display: block;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: currentColor; opacity: .5;
+}
+
+/* --- dwa bloki godzinowe (MORNING / SUNSET) --- */
+.time-split {
+  display: grid; grid-template-columns: 1fr 1px 1fr;
+  align-items: center; gap: 34px;
+}
+.time-split__sep { background: var(--c-line); height: 96px; width: 1px; justify-self: center; }
+.time-block { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.time-block__head { display: flex; align-items: center; gap: 14px; }
+.time-block__head svg { width: 34px; height: 34px; }
+.time-block__label {
+  font-family: var(--f-sans); font-size: 26px; font-weight: 500;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--rose-400);
+}
+.time-block__hours {
+  font-family: var(--f-sans); font-size: 40px; font-weight: 400;
+  letter-spacing: .06em; color: var(--ink-700);
+}
+
+/* --- ramka ozdobna (BILETY) --- */
+.panel {
+  position: relative;
+  border: 1px solid var(--c-line);
+  border-radius: 26px;
+  padding: 46px 54px;
+}
+.panel__gem {
+  position: absolute; top: 50%; width: 22px; height: 22px;
+  transform: translateY(-50%) rotate(45deg);
+  background: radial-gradient(circle, var(--rose-100) 0%, var(--rose-300) 70%);
+  border-radius: 4px;
+}
+.panel__gem--l { left: -11px; }
+.panel__gem--r { right: -11px; }
+.panel--solid {
+  background: var(--rose-100);
+  border-color: transparent;
+  color: var(--ink-900);
+  border-radius: 18px;
+  padding: 26px 40px;
+}
+.panel--slim { padding: 28px 40px; border-radius: 20px; }
+
+/* --- wiersz: ikona + treść (MORNING VIBE) --- */
+.feature {
+  display: grid; grid-template-columns: 76px 1fr;
+  align-items: center; gap: 24px; text-align: left;
+}
+.feature__icon {
+  width: 76px; height: 76px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--terracotta);
+  color: #fff;
+}
+.feature__icon svg { width: 38px; height: 38px; }
+.feature__title {
+  font-family: var(--f-sans); font-size: 30px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--terracotta);
+  line-height: 1.2;
+}
+.feature__desc {
+  font-family: var(--f-sans); font-size: 25px; font-weight: 300;
+  color: var(--ink-700); line-height: 1.35; margin-top: 4px;
+}
+.feature-card {
+  background: rgba(255,252,249,.82);
+  border-radius: 22px;
+  padding: 18px 30px;
+  backdrop-filter: blur(2px);
+}
+
+/* --- pomocnicze --- */
+.stack { display: flex; flex-direction: column; }
+.center { align-items: center; }
+.grow { flex: 1 1 auto; }
+.mt-8 { margin-top: 8px; }  .mt-14 { margin-top: 14px; }
+.mt-20 { margin-top: 20px; } .mt-28 { margin-top: 28px; }
+.mt-38 { margin-top: 38px; } .mt-52 { margin-top: 52px; }
+.mt-70 { margin-top: 70px; }
+.w-narrow { max-width: 760px; margin-inline: auto; }
+.w-mid { max-width: 850px; margin-inline: auto; }
+
+/* ============================================================
+   MOTYWY SLAJDÓW
+   ============================================================ */
+
+/* jasny (kremowy) */
+.t-light {
+  --c-title: var(--rose-300);
+  --c-body: var(--ink-700);
+  --c-muted: var(--ink-500);
+  --c-line: rgba(200,150,150,.45);
+  --veil: var(--veil-light);
+}
+
+/* ciemny (noc / rooftop) */
+.t-dark {
+  --c-title: var(--rose-100);
+  --c-body: #F2E4DE;
+  --c-muted: rgba(242,228,222,.72);
+  --c-line: rgba(244,198,196,.5);
+  --veil: var(--veil-dark);
+}
+.t-dark .eyebrow { color: var(--rose-100); }
+.t-dark .time-block__hours { color: #F6E7E1; }
+.t-dark .time-block__label { color: var(--rose-200); }
+
+/* poranny (terakota) */
+.t-morning {
+  --c-title: var(--terracotta);
+  --c-body: var(--ink-700);
+  --c-line: rgba(192,87,92,.35);
+  --veil: .06;
+}
+
+/* wieczorny (złoto + bordo) */
+.t-sunset {
+  --c-title: #8E3F52;
+  --c-body: #4A3230;
+  --c-line: rgba(142,63,82,.35);
+  --veil: .10;
+}
+.t-sunset .feature__icon { background: #8E3F52; }
+.t-sunset .feature__title { color: #8E3F52; }
+.t-sunset .feature__desc { color: #4A3230; }
+
+/* granatowy */
+.t-blue {
+  --c-title: var(--peach-200);
+  --c-body: #F3E2D6;
+  --c-muted: rgba(243,226,214,.75);
+  --c-line: rgba(246,198,180,.45);
+  --veil: .22;
+}

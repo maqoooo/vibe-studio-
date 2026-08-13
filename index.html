@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIBE STUDIO — karuzela Instagram</title>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/studio.css">
+</head>
+<body class="studio">
+
+<div class="bar">
+  <span class="bar__title">VIBE Studio</span>
+  <span class="bar__sub">VIBE SOCIAL CLUB &bull; Rooftop Edition &bull; 22.08 &bull; karuzela 1080&times;1350</span>
+  <span class="bar__spacer"></span>
+
+  <button class="btn" id="edit">Edycja tekstu</button>
+  <label class="bar__sub" style="display:flex;align-items:center;gap:8px">
+    Jakość PNG
+    <select id="scale" class="btn btn--sm" style="padding:6px 10px">
+      <option value="1">1080 px</option>
+      <option value="2" selected>2160 px (2&times;)</option>
+    </select>
+  </label>
+  <button class="btn btn--primary" id="all">Pobierz wszystkie PNG</button>
+  <button class="btn" id="save-json">Zapisz zmiany (JSON)</button>
+  <button class="btn" id="reset">Reset</button>
+</div>
+
+<div class="notice notice--hidden" id="notice">
+  <strong>Otwierasz plik bezpośrednio z dysku (file://).</strong>
+  Podgląd zadziała, ale edycja tekstu i eksport PNG wymagają serwera lokalnego.
+  W katalogu projektu uruchom: <code>npm start</code> — i wejdź na <code>http://localhost:8080</code>.
+</div>
+
+<div class="grid" id="grid"></div>
+
+<p class="foot">
+  <strong>Jak to działa:</strong>
+  <em>Zdjęcie…</em> lub przeciągnij plik na podgląd, żeby podmienić tło &nbsp;·&nbsp;
+  <em>Kadr</em> ustawia zoom i wycinek zdjęcia &nbsp;·&nbsp;
+  <em>Edycja tekstu</em> pozwala pisać wprost na slajdzie &nbsp;·&nbsp;
+  <em>PNG</em> pobiera gotowy slajd.<br>
+  Zmiany zapisują się w przeglądarce. Wersja docelowa (ta, która trafia do repozytorium)
+  to pliki <code>slides/*.html</code> — tam wprowadzasz ostateczne poprawki,
+  a komplet grafik generujesz komendą <code>npm run export</code>.
+</p>
+
+<input type="file" id="file" class="hidden-input" accept="image/*">
+<div class="toast" id="toast"></div>
+
+<script src="assets/js/studio.js"></script>
+</body>
+</html>

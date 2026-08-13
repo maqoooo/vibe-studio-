@@ -1,0 +1,78 @@
+/* ============================================================
+   VIBE SOCIAL CLUB — TOKENY MARKI
+   Tu zmieniasz kolory, fonty i proporcje CAŁEGO karuzeli.
+   Jedna zmiana tutaj = zmiana na wszystkich slajdach.
+   ============================================================ */
+
+:root {
+  /* ---------- FORMAT SLAJDU (Instagram 4:5) ---------- */
+  --slide-w: 1080px;
+  --slide-h: 1350px;
+  --safe-x: 96px;   /* margines boczny */
+  --safe-y: 92px;   /* margines góra/dół */
+
+  /* ---------- KOLORY: JASNY SLAJD (okładka, morning) ---------- */
+  --cream-100: #F7EFE9;
+  --cream-200: #F1E2D8;
+  --cream-300: #E6D0C4;
+
+  --rose-100: #F6D9D8;
+  --rose-200: #EFC0C1;
+  --rose-300: #E4A7AC;   /* główny róż tytułów */
+  --rose-400: #D98F96;
+  --rose-500: #C97880;
+
+  --terracotta: #C0575C; /* akcent "MORNING VIBE" */
+  --terracotta-dark: #A8444A;
+
+  --ink-900: #2E2A2A;    /* prawie czarny, ciepły */
+  --ink-700: #4A4240;
+  --ink-500: #6E615C;
+  --ink-300: #9C8B84;
+
+  /* ---------- KOLORY: CIEMNY SLAJD (bilety, cta, alt) ---------- */
+  --night-900: #17141C;
+  --night-800: #221E29;
+  --night-700: #2E2733;
+  --dusk-blue: #1E3A5F;
+  --dusk-blue-dark: #14263F;
+  --peach-200: #F6C6B4;
+
+  /* ---------- ROLE KOLORÓW ---------- */
+  --c-title: var(--rose-300);
+  --c-body: var(--ink-700);
+  --c-muted: var(--ink-500);
+  --c-line: rgba(233, 175, 178, .55);
+
+  /* ---------- TYPOGRAFIA ---------- */
+  --f-display: "Cormorant Garamond", "Didot", "Bodoni MT", Georgia, serif;
+  --f-script: "Parisienne", "Snell Roundhand", "Brush Script MT", cursive;
+  --f-sans: "Jost", "Futura", "Century Gothic", "Helvetica Neue", Arial, sans-serif;
+
+  /* skala typograficzna (dla slajdu 1080px) */
+  --t-hero: 210px;
+  --t-h1: 96px;
+  --t-h2: 62px;
+  --t-h3: 40px;
+  --t-lead: 30px;
+  --t-body: 27px;
+  --t-small: 23px;
+  --t-micro: 19px;
+
+  --ls-wide: .28em;   /* rozstrzelenie wersalików */
+  --ls-mid: .16em;
+  --ls-tight: .04em;
+
+  /* ---------- PRZYCIEMNIENIE ZDJĘĆ ---------- */
+  --veil-light: .10;  /* jasne slajdy */
+  --veil-dark: .42;   /* ciemne slajdy */
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+img { display: block; max-width: 100%; }
+p, h1, h2, h3, h4, ul, li, figure { margin: 0; padding: 0; }
+ul { list-style: none; }
