@@ -31,6 +31,14 @@
 /* warstwa 3 — woal poprawiający czytelność tekstu */
 .slide__veil { position: absolute; inset: 0; z-index: 2; opacity: var(--veil, .18); }
 
+/* ozdobna ramka wzdłuż krawędzi slajdu */
+.slide__frame {
+  position: absolute; z-index: 3; pointer-events: none;
+  inset: var(--frame-inset, 14px);
+  border: 1px solid var(--frame-color, rgba(246,201,192,.5));
+  border-radius: var(--frame-radius, 0);
+}
+
 /* warstwa 4 — treść */
 .slide__content {
   position: relative; z-index: 3;
@@ -82,6 +90,21 @@
     linear-gradient(180deg,
       #F0DDD0 0%, #F5D9C0 20%, #F0C39C 38%, #E3AC8B 52%,
       #DCA792 62%, #E2B7A3 76%, #EAC9B8 88%, #F0D7C8 100%);
+}
+
+/* Taras nad jeziorem w słońcu — okładka */
+.bg--lake {
+  background:
+    /* cienie liści palmowych na płytkach */
+    radial-gradient(ellipse 34% 9% at 16% 82%, rgba(52,62,74,.26) 0%, rgba(52,62,74,0) 72%),
+    radial-gradient(ellipse 30% 8% at 86% 74%, rgba(52,62,74,.22) 0%, rgba(52,62,74,0) 72%),
+    radial-gradient(ellipse 26% 7% at 34% 94%, rgba(52,62,74,.18) 0%, rgba(52,62,74,0) 72%),
+    /* blask nieba */
+    radial-gradient(70% 34% at 50% 4%, rgba(126,178,214,.55) 0%, rgba(126,178,214,0) 70%),
+    linear-gradient(180deg,
+      #14406B 0%, #1B4E7C 18%, #24608E 34%, #2E6E9C 44%,
+      #2F4C5E 47%, #2C6685 48.5%, #35779A 52%, #4E8AA8 56%,
+      #8E9899 58%, #ADAAA4 62%, #B2AFA8 74%, #9E9B95 90%, #8A8781 100%);
 }
 
 /* Noc / granat — alternatywna okładka */
@@ -356,6 +379,16 @@
 .t-sunset .feature__icon { background: #8E3F52; }
 .t-sunset .feature__title { color: #8E3F52; }
 .t-sunset .feature__desc { color: #4A3230; }
+
+/* okładka — pudrowy róż na zdjęciu */
+.t-cover {
+  --c-title: #F8CCC3;
+  --c-body: #F4D5CD;
+  --c-muted: rgba(244,213,205,.85);
+  --c-line: rgba(248,204,195,.5);
+  --frame-color: rgba(248,204,195,.55);
+  --veil: .10;
+}
 
 /* granatowy */
 .t-blue {
