@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>wdialogu — Asystent Deklaracji · animowana sekcja hero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="hero.css">
+  <style>
+    /* Style samej strony demo (nawigacja). Na Twojej stronie użyj własnego menu. */
+    body { margin: 0; font-family: "Manrope", system-ui, sans-serif; color: #0f1b2d; background: #fafbfc; }
+    .demo-nav { position: absolute; z-index: 5; inset: 0 0 auto 0; display: flex; align-items: center; gap: 28px;
+      max-width: 1320px; margin: 0 auto; padding: 26px 24px; }
+    .demo-nav__logo { font-weight: 800; font-size: 30px; letter-spacing: -0.04em; text-decoration: none; color: inherit; margin-right: auto; }
+    .demo-nav__links { display: flex; gap: 34px; margin-right: auto; }
+    .demo-nav a { text-decoration: none; color: inherit; font-weight: 600; font-size: 15px; }
+    .demo-nav__links a { position: relative; }
+    .demo-nav__links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: #3ea637;
+      transform: scaleX(0); transform-origin: left; transition: transform .3s cubic-bezier(.22,1,.36,1); }
+    .demo-nav__links a:hover::after { transform: scaleX(1); }
+    .demo-nav__cta { border: 1.5px solid #3ea637; color: #3ea637 !important; padding: 10px 22px; border-radius: 999px; transition: background .3s, color .3s; }
+    .demo-nav__cta:hover { background: #3ea637; color: #fff !important; }
+    @media (max-width: 900px) { .demo-nav__links, .demo-nav > a:not(.demo-nav__logo):not(.demo-nav__cta) { display: none; } .demo-nav { padding: 18px 20px; } .demo-nav__logo { font-size: 26px; } }
+    .demo-filler { padding: 120px 24px; text-align: center; color: #5b6472; }
+  </style>
+</head>
+<body>
+
+<header class="demo-nav">
+  <a class="demo-nav__logo" href="#">wdialogu</a>
+  <nav class="demo-nav__links">
+    <a href="#">Usługi</a><a href="#">Wsparcie</a><a href="#">Śledzenie</a><a href="#">Opłaty</a><a href="#">Lokalizacje</a>
+  </nav>
+  <a href="#">Zaloguj się</a>
+  <a class="demo-nav__cta" href="#">Zarejestruj się</a>
+</header>
+
+<!-- ====================== POCZĄTEK SEKCJI DO OSADZENIA ====================== -->
+<section class="wd-hero" aria-label="Asystent Deklaracji">
+
+  <div class="wd-hero__bg" aria-hidden="true">
+    <svg class="wd-hero__arcs" viewBox="0 0 1000 1000">
+      <circle cx="500" cy="500" r="220"/>
+      <circle cx="500" cy="500" r="330"/>
+      <circle cx="500" cy="500" r="440"/>
+      <circle cx="500" cy="500" r="495"/>
+    </svg>
+    <div class="wd-hero__glow wd-hero__glow--a"></div>
+    <div class="wd-hero__glow wd-hero__glow--b"></div>
+    <div class="wd-shape wd-shape--blob"></div>
+    <div class="wd-shape wd-shape--dot"></div>
+    <div class="wd-shape wd-shape--diamond"><div class="wd-shape__inner"></div></div>
+    <div class="wd-shape wd-shape--tri"><div class="wd-shape__inner"></div></div>
+  </div>
+
+  <div class="wd-hero__inner">
+    <p class="wd-hero__eyebrow wd-reveal" style="--d:.05s">Asystent Deklaracji</p>
+
+    <h1 class="wd-hero__title">
+      <span class="wd-line">
+        <span class="wd-word" style="--d:.15s">Uprość</span>
+        <span class="wd-word" style="--d:.25s">formalności</span>
+      </span>
+      <span class="wd-line">
+        <span class="wd-word" style="--d:.35s">z</span>
+        <span class="wd-word" style="--d:.42s">Asystentem</span>
+        <span class="wd-word wd-accent" style="--d:.5s">Deklaracji</span>
+      </span>
+    </h1>
+
+    <p class="wd-hero__lead wd-reveal" style="--d:.55s">
+      Inteligentny moduł Wdialogu, który prowadzi Cię przez proces składania
+      i&nbsp;opłacania deklaracji. Bezstresowo i&nbsp;terminowo.
+    </p>
+
+    <div class="wd-reveal" style="--d:.7s">
+      <a class="wd-btn" href="#rejestracja">
+        Zarejestruj się
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <!-- scena: 3 karty + ścieżka -->
+    <div class="wd-scene">
+
+      <svg class="wd-path" aria-hidden="true">
+        <path class="wd-path__line" d="M0 0"/>
+        <path class="wd-path__progress" d="M0 0"/>
+        <circle class="wd-path__node" data-card="0" r="7"/>
+        <circle class="wd-path__node" data-card="2" r="7"/>
+        <circle class="wd-path__runner" r="8"/>
+      </svg>
+
+      <!-- KARTA 1 -->
+      <article class="wd-card wd-card--1">
+        <div class="wd-card__head">
+          <span class="wd-card__num">1</span>
+          <span class="wd-card__title">Wypełnij deklarację</span>
+        </div>
+        <div class="wd-decl">
+          <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <rect x="6" y="10" width="18" height="24" rx="2" fill="#3ea637"/>
+            <rect x="24" y="18" width="10" height="16" rx="2" fill="#8fd47f"/>
+            <rect x="10" y="14" width="3" height="3" fill="#fff"/><rect x="16" y="14" width="3" height="3" fill="#fff"/>
+            <rect x="10" y="20" width="3" height="3" fill="#fff"/><rect x="16" y="20" width="3" height="3" fill="#fff"/>
+            <rect x="10" y="26" width="3" height="3" fill="#fff"/><rect x="16" y="26" width="3" height="3" fill="#fff"/>
+            <rect x="27" y="22" width="4" height="3" fill="#fff"/><rect x="27" y="28" width="4" height="3" fill="#fff"/>
+          </svg>
+          <div>
+            <strong>Deklaracja DN-1</strong>
+            <span>Podatek od nieruchomości dla osób prawnych</span>
+          </div>
+        </div>
+        <div class="wd-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h3a1 1 0 0 1 1 1v11M8 7h3M8 11h3M8 15h3M4 21h16"/></svg>
+          <span class="wd-field__val" data-text="Nazwa podmiotu"></span>
+          <span class="wd-field__check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
+        </div>
+        <div class="wd-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span class="wd-field__val" data-label="NIP:" data-text="123-456-32-18"></span>
+          <span class="wd-field__check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
+        </div>
+        <div class="wd-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+          <span class="wd-field__val" data-label="Rok podatkowy:" data-text="2026"></span>
+          <span class="wd-field__check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
+        </div>
+        <p class="wd-card__hint">Sprawdź i potwierdź dane</p>
+        <i class="wd-card__anchor" aria-hidden="true"></i>
+      </article>
+
+      <!-- KARTA 2 -->
+      <article class="wd-card wd-card--2">
+        <div class="wd-card__head">
+          <span class="wd-card__num">2</span>
+          <span class="wd-card__title">Weryfikacja i Wyliczenie</span>
+        </div>
+        <div class="wd-gears" aria-hidden="true">
+          <svg class="wd-gear wd-gear--s" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm9.4 5.5-.8-.3a7 7 0 0 0 0-2.4l.8-.3a1 1 0 0 0 .6-1.3l-.8-2a1 1 0 0 0-1.3-.5l-.8.3a7 7 0 0 0-1.7-1.7l.3-.8a1 1 0 0 0-.5-1.3l-2-.8a1 1 0 0 0-1.3.6l-.3.8a7 7 0 0 0-2.4 0l-.3-.8A1 1 0 0 0 9.6.9l-2 .8a1 1 0 0 0-.5 1.3l.3.8A7 7 0 0 0 5.7 5.5l-.8-.3a1 1 0 0 0-1.3.5l-.8 2a1 1 0 0 0 .6 1.3l.8.3a7 7 0 0 0 0 2.4l-.8.3a1 1 0 0 0-.6 1.3l.8 2a1 1 0 0 0 1.3.5l.8-.3a7 7 0 0 0 1.7 1.7l-.3.8a1 1 0 0 0 .5 1.3l2 .8a1 1 0 0 0 1.3-.6l.3-.8a7 7 0 0 0 2.4 0l.3.8a1 1 0 0 0 1.3.6l2-.8a1 1 0 0 0 .5-1.3l-.3-.8a7 7 0 0 0 1.7-1.7l.8.3a1 1 0 0 0 1.3-.5l.8-2a1 1 0 0 0-.6-1.3Z"/></svg>
+          <svg class="wd-gear wd-gear--l" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm9.4 5.5-.8-.3a7 7 0 0 0 0-2.4l.8-.3a1 1 0 0 0 .6-1.3l-.8-2a1 1 0 0 0-1.3-.5l-.8.3a7 7 0 0 0-1.7-1.7l.3-.8a1 1 0 0 0-.5-1.3l-2-.8a1 1 0 0 0-1.3.6l-.3.8a7 7 0 0 0-2.4 0l-.3-.8A1 1 0 0 0 9.6.9l-2 .8a1 1 0 0 0-.5 1.3l.3.8A7 7 0 0 0 5.7 5.5l-.8-.3a1 1 0 0 0-1.3.5l-.8 2a1 1 0 0 0 .6 1.3l.8.3a7 7 0 0 0 0 2.4l-.8.3a1 1 0 0 0-.6 1.3l.8 2a1 1 0 0 0 1.3.5l.8-.3a7 7 0 0 0 1.7 1.7l-.3.8a1 1 0 0 0 .5 1.3l2 .8a1 1 0 0 0 1.3-.6l.3-.8a7 7 0 0 0 2.4 0l.3.8a1 1 0 0 0 1.3.6l2-.8a1 1 0 0 0 .5-1.3l-.3-.8a7 7 0 0 0 1.7-1.7l.8.3a1 1 0 0 0 1.3-.5l.8-2a1 1 0 0 0-.6-1.3Z"/></svg>
+          <svg class="wd-gear wd-gear--s" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm9.4 5.5-.8-.3a7 7 0 0 0 0-2.4l.8-.3a1 1 0 0 0 .6-1.3l-.8-2a1 1 0 0 0-1.3-.5l-.8.3a7 7 0 0 0-1.7-1.7l.3-.8a1 1 0 0 0-.5-1.3l-2-.8a1 1 0 0 0-1.3.6l-.3.8a7 7 0 0 0-2.4 0l-.3-.8A1 1 0 0 0 9.6.9l-2 .8a1 1 0 0 0-.5 1.3l.3.8A7 7 0 0 0 5.7 5.5l-.8-.3a1 1 0 0 0-1.3.5l-.8 2a1 1 0 0 0 .6 1.3l.8.3a7 7 0 0 0 0 2.4l-.8.3a1 1 0 0 0-.6 1.3l.8 2a1 1 0 0 0 1.3.5l.8-.3a7 7 0 0 0 1.7 1.7l-.3.8a1 1 0 0 0 .5 1.3l2 .8a1 1 0 0 0 1.3-.6l.3-.8a7 7 0 0 0 2.4 0l.3.8a1 1 0 0 0 1.3.6l2-.8a1 1 0 0 0 .5-1.3l-.3-.8a7 7 0 0 0 1.7-1.7l.8.3a1 1 0 0 0 1.3-.5l.8-2a1 1 0 0 0-.6-1.3Z"/></svg>
+        </div>
+        <div class="wd-progress">
+          <div class="wd-progress__bar"><div class="wd-progress__fill"></div></div>
+          <span class="wd-progress__pct">0%</span>
+        </div>
+        <ul class="wd-steps">
+          <li>System weryfikuje poprawność…</li>
+          <li>Wyliczanie należności</li>
+        </ul>
+        <span class="wd-card__badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+        </span>
+        <i class="wd-card__anchor" aria-hidden="true"></i>
+      </article>
+
+      <!-- KARTA 3 -->
+      <article class="wd-card wd-card--3">
+        <div class="wd-card__head">
+          <span class="wd-card__num">3</span>
+          <span class="wd-card__title">Podsumowanie i Płatność</span>
+        </div>
+        <div class="wd-pay">
+          <div class="wd-pay__label">Do zapłaty:</div>
+          <div class="wd-pay__amount"><span class="wd-num">0,00</span><small>PLN</small></div>
+        </div>
+        <div class="wd-pay__methods-label">Wybierz metodę płatności</div>
+        <div class="wd-methods">
+          <span class="wd-method" title="Płatność mobilna">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="24" height="24" rx="6" fill="#0f1b2d"/><path d="M11 9h3v4.2a5.3 5.3 0 1 1-3 4.8V9Zm3 6.4a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z" fill="#fff"/><circle cx="21" cy="11" r="2" fill="#f06a9b"/></svg>
+          </span>
+          <span class="wd-method" title="Karta płatnicza">
+            <svg viewBox="0 0 32 32" fill="none" stroke="#0f1b2d" stroke-width="2" aria-hidden="true"><rect x="4" y="8" width="24" height="16" rx="3"/><path d="M4 13h24M9 19h6"/></svg>
+          </span>
+        </div>
+        <button class="wd-btn-pay" type="button" tabindex="-1" aria-hidden="true">
+          <span class="wd-btn-pay__txt">Zapłać teraz</span>
+          <span class="wd-btn-pay__ok">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+            Opłacono
+          </span>
+        </button>
+        <div class="wd-confetti" aria-hidden="true"></div>
+        <i class="wd-card__anchor" aria-hidden="true"></i>
+      </article>
+
+    </div><!-- /.wd-scene -->
+  </div><!-- /.wd-hero__inner -->
+</section>
+
+<!-- Pasek logotypów (opcjonalny) — podmień na własne loga -->
+<div class="wd-logos" aria-label="Zaufali nam">
+  <div class="wd-logos__track">
+    <span class="wd-logo"><svg viewBox="0 0 36 36" fill="currentColor"><path d="M18 2 6 7v9c0 8 5.3 14.6 12 18 6.7-3.4 12-10 12-18V7L18 2Z"/></svg>logoipsum</span>
+    <span class="wd-logo"><svg viewBox="0 0 36 36" fill="currentColor"><circle cx="11" cy="11" r="6"/><circle cx="25" cy="11" r="6"/><circle cx="11" cy="25" r="6"/><circle cx="25" cy="25" r="6"/></svg>logoipsum</span>
+    <span class="wd-logo"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="3"><circle cx="18" cy="18" r="14"/><path d="M6 14c8 6 16 2 24 8M8 24c8-6 14-2 22 2"/></svg>logoipsum</span>
+    <span class="wd-logo"><svg viewBox="0 0 36 36" fill="currentColor"><path d="M8 4h9v28H8zM19 4a14 14 0 0 1 0 28z"/></svg>logoipsum</span>
+    <span class="wd-logo"><svg viewBox="0 0 36 36" fill="currentColor"><path d="M18 2 6 7v9c0 8 5.3 14.6 12 18 6.7-3.4 12-10 12-18V7L18 2Z"/></svg>logoipsum</span>
+    <span class="wd-logo"><svg viewBox="0 0 36 36" fill="currentColor"><circle cx="11" cy="11" r="6"/><circle cx="25" cy="11" r="6"/><circle cx="11" cy="25" r="6"/><circle cx="25" cy="25" r="6"/></svg>logoipsum</span>
+    <span class="wd-logo"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="3"><circle cx="18" cy="18" r="14"/><path d="M6 14c8 6 16 2 24 8M8 24c8-6 14-2 22 2"/></svg>logoipsum</span>
+    <span class="wd-logo"><svg viewBox="0 0 36 36" fill="currentColor"><path d="M8 4h9v28H8zM19 4a14 14 0 0 1 0 28z"/></svg>logoipsum</span>
+  </div>
+</div>
+
+<script src="hero.js"></script>
+<!-- ======================= KONIEC SEKCJI DO OSADZENIA ======================= -->
+
+<div class="demo-filler">Tu zaczyna się dalsza część Twojej strony.</div>
+
+</body>
+</html>
