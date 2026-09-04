@@ -31,6 +31,13 @@ film przechodzi pod tekst. Film odtwarza się bez dźwięku, w pętli i tylko
 wtedy, gdy jest w kadrze. Przenosząc sekcję na stronę, skopiuj katalogi
 `export/` i `assets/fonts*` albo popraw ścieżki w atrybutach `src`.
 
+**Wersja w jednym pliku.** `npm run promo:section` składa
+`export/sekcja-jak-to-dziala-standalone.html` — fonty, okładka i film są
+osadzone w HTML jako data URI, więc plik można wysłać mailem albo wrzucić na
+serwer bez żadnych katalogów obok. Film jest przy tym przekodowany do lżejszej
+wersji web (CRF 22, ok. 2,6 MB), cały plik ma ok. 3,7 MB. Opcja
+`--no-recompress` osadza oryginalny MP4 bez zmian.
+
 Zapasowy WebM robi się z gotowego MP4:
 
 ```bash
