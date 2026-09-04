@@ -1,0 +1,81 @@
+/* ============================================================
+   Mockup telefonu do osadzenia na jasnym tle strony (frontalnie, bez 3D).
+   Wymiary w układzie telefonu: 430 × 932, ekran 393 × 852. Wielkość na
+   stronie ustawia `zoom` na .phone-embed.
+   ============================================================ */
+
+.phone-embed {
+  --app-bg: #CDE8EE; --card-tint: #EAF6F8; --ink: #141414;
+  --teal: #2E7E8C; --teal-soft: #5E95A1; --yellow: #F5D66B;
+  --f-ui: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
+  position: relative; width: 430px; height: 932px; margin: 0 auto;
+  font-family: var(--f-ui); color: var(--ink);
+  zoom: .78;
+}
+.phone-embed .phone { position: absolute; inset: 0; }
+
+.phone-embed .phone__body {
+  position: absolute; inset: 0; border-radius: 70px;
+  background: linear-gradient(160deg, #5b6068 0%, #2b2e33 22%, #171a1e 50%, #2c3035 78%, #62676f 100%);
+  box-shadow:
+    0 0 0 1.5px rgba(255,255,255,.10),
+    inset 0 0 0 1px rgba(0,0,0,.6),
+    0 40px 80px -30px rgba(20, 50, 60, .45),
+    0 18px 36px -18px rgba(20, 50, 60, .35);
+}
+.phone-embed .phone__shine {
+  position: absolute; inset: 0; border-radius: 70px; pointer-events: none;
+  background: linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.22) 50%, rgba(255,255,255,0) 70%);
+  background-size: 300% 100%; background-position: 35% 0;
+  mix-blend-mode: screen; opacity: .8;
+  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  -webkit-mask-composite: xor; mask-composite: exclude; padding: 4px;
+}
+.phone-embed .phone__glass { position: absolute; inset: 5px; border-radius: 66px; background: #050607; }
+.phone-embed .phone__screen {
+  position: absolute; left: 18.5px; top: 40px; width: 393px; height: 852px;
+  border-radius: 56px; overflow: hidden; background: var(--app-bg);
+  transform: translateZ(0);
+}
+.phone-embed .phone__island {
+  position: absolute; left: 50%; top: 52px; width: 126px; height: 37px;
+  border-radius: 20px; background: #000; transform: translateX(-50%); z-index: 5;
+}
+.phone-embed .phone__island::after {
+  content: ""; position: absolute; right: 12px; top: 12px; width: 13px; height: 13px;
+  border-radius: 50%; background: radial-gradient(circle at 40% 40%, #1d2733, #05070a 70%);
+}
+.phone-embed .phone__gloss {
+  position: absolute; inset: 5px; border-radius: 66px; pointer-events: none; z-index: 6;
+  background:
+    linear-gradient(112deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.04) 28%, rgba(255,255,255,0) 46%);
+  mix-blend-mode: screen;
+}
+.phone-embed .phone__btn {
+  position: absolute; width: 4px; border-radius: 2px; background: #3b3f46;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.phone-embed .phone__btn--action { left: -4px; top: 200px; height: 36px; }
+.phone-embed .phone__btn--volup  { left: -4px; top: 262px; height: 66px; }
+.phone-embed .phone__btn--voldn  { left: -4px; top: 342px; height: 66px; }
+.phone-embed .phone__btn--power  { right: -4px; top: 290px; height: 100px; }
+
+/* wygaszenie na styku pętli (kolor tła aplikacji) */
+.phone-embed .loop-fade {
+  position: absolute; inset: 0; background: var(--app-bg); z-index: 30; pointer-events: none;
+}
+
+/* gest dotknięcia — jak w scenie promo */
+.phone-embed .touch {
+  position: absolute; left: 0; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px;
+  z-index: 20; opacity: 0; pointer-events: none;
+}
+.phone-embed .touch__dot {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.92), rgba(255,255,255,.55) 60%, rgba(255,255,255,.2));
+  box-shadow: 0 6px 18px rgba(0,0,0,.25), 0 0 0 2px rgba(255,255,255,.35);
+}
+.phone-embed .touch__ring {
+  position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(255,255,255,.9);
+  opacity: 0; transform: scale(1);
+}

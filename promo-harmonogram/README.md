@@ -13,32 +13,40 @@ promo-harmonogram/
 │   ├── screens.css       ← ekrany aplikacji (adres, harmonogram, powiadomienia)
 │   ├── timeline.js       ← OŚ CZASU: co, kiedy i jak się porusza
 │   ├── fonts.css + fonts/← Poppins (lokalnie, render nie zależy od internetu)
-├── sekcja-jak-to-dziala.html ← sekcja „Jak to działa” na stronę WWW z osadzonym filmem
+├── sekcja-jak-to-dziala.template.html ← szablon sekcji „Jak to działa” na stronę WWW
+│   assets/phone-embed.css, assets/timeline-embed.js ← mockup i pętla animacji do sekcji
 └── export/
     ├── harmonogram-promo.mp4          ← gotowy film (H.264)
     ├── harmonogram-promo.webm         ← ten sam film w VP9 (zapas dla przeglądarek bez H.264)
-    └── harmonogram-promo-poster.jpg   ← klatka-okładka (ostatnia klatka)
+    ├── harmonogram-promo-poster.jpg   ← klatka-okładka (ostatnia klatka)
+    └── sekcja-jak-to-dziala-standalone.html ← gotowa sekcja WWW w jednym pliku
 ```
 
 ## Sekcja „Jak to działa” (strona WWW)
 
-`sekcja-jak-to-dziala.html` to samodzielny blok do wklejenia na landing page:
-po lewej film w zaokrąglonej ramce z poświatą, po prawej nagłówek i trzy kroki
-(adres → termin → powiadomienie) na pionowej osi. Cały CSS jest w pliku,
-zewnętrzne są tylko fonty (`assets/fonts.css`) i pliki wideo z `export/`.
-Układ jest responsywny — poniżej 860 px kolumny układają się jedna pod drugą,
-film przechodzi pod tekst. Film odtwarza się bez dźwięku, w pętli i tylko
-wtedy, gdy jest w kadrze. Przenosząc sekcję na stronę, skopiuj katalogi
-`export/` i `assets/fonts*` albo popraw ścieżki w atrybutach `src`.
+Blok do wklejenia na landing page: po lewej **mockup telefonu ustawiony
+frontalnie**, w którym ekrany aplikacji animują się na żywo w HTML/CSS (to ten
+sam kod ekranów co w filmie — dotknięcie adresu, harmonogram z rozwinięciem
+PLASTIK, dzwonek, przełączniki, godzina 19:00, potwierdzenie; pętla co 13 s);
+po prawej nagłówek i trzy kroki na pionowej osi.
 
-**Wersja w jednym pliku.** `npm run promo:section` składa
-`export/sekcja-jak-to-dziala-standalone.html` — fonty, okładka i film są
-osadzone w HTML jako data URI, więc plik można wysłać mailem albo wrzucić na
-serwer bez żadnych katalogów obok. Film jest przy tym przekodowany do lżejszej
-wersji web (CRF 22, ok. 2,6 MB), cały plik ma ok. 3,7 MB. Opcja
-`--no-recompress` osadza oryginalny MP4 bez zmian.
+```bash
+npm run promo:section   # → export/sekcja-jak-to-dziala-standalone.html (ok. 140 kB)
+```
 
-Zapasowy WebM robi się z gotowego MP4:
+Plik wynikowy nie ma żadnych zależności: fonty Poppins są osadzone jako data
+URI, ekrany, style i skrypt wklejone. Można go otworzyć z dysku, wysłać mailem
+albo wkleić `<section class="how">…</section>` razem z blokami `<style>`
+i `<script>` do istniejącej strony — selektory ekranów mają prefiks
+`.phone-embed`, więc nie kolidują z CSS strony. Układ jest responsywny (poniżej
+860 px telefon przechodzi pod tekst), animacja gra tylko, gdy telefon jest
+w kadrze, a przy `prefers-reduced-motion` pokazuje nieruchomy stan końcowy.
+
+Zmiany w ekranach robi się w `index.html` / `assets/screens.css` (wspólne
+z filmem), w układzie sekcji — w szablonie, w czasach pętli —
+w `assets/timeline-embed.js`. Po zmianie uruchom `npm run promo:section`.
+
+Zapasowy WebM do filmu robi się z gotowego MP4:
 
 ```bash
 ffmpeg -i export/harmonogram-promo.mp4 -c:v libvpx-vp9 -b:v 0 -crf 30 -row-mt 1 -an export/harmonogram-promo.webm

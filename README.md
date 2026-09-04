@@ -102,6 +102,7 @@ publikacji jako Reel / TikTok / Short. Gotowy film: `promo-harmonogram/export/ha
 ```bash
 npm run promo          # podgląd z suwakiem czasu
 npm run promo:render   # render do MP4 (Playwright + ffmpeg)
+npm run promo:section  # sekcja „Jak to działa” na WWW z animowanym mockupem (1 plik HTML)
 ```
 
 Szczegóły, przebieg sekunda po sekundzie i instrukcja zmian:

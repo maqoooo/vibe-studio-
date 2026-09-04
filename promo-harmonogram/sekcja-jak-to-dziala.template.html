@@ -4,20 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Jak to działa — Harmonogram wywozu śmieci</title>
-<!-- Poppins lokalnie (ten sam krój co w animacji). Bez tego pliku sekcja
-     działa dalej na krojach systemowych. -->
-<link rel="stylesheet" href="assets/fonts.css">
+<!-- @fonts -->
 <style>
   /* ============================================================
      Sekcja „Jak to działa” — samodzielny blok do wklejenia na stronę.
-     Lewa kolumna: animacja promo (MP4) w zaokrąglonej ramce z poświatą.
-     Prawa kolumna: nagłówek + trzy kroki na pionowej osi.
+     Lewa kolumna: mockup telefonu (frontalnie) z animacją ekranów
+     odtwarzaną na żywo w HTML/CSS. Prawa: nagłówek + trzy kroki.
+
+     SZABLON — plik wynikowy składa scripts/build-section.mjs
+     (npm run promo:section): wkleja ekrany z index.html, style,
+     skrypt osi czasu i fonty jako data URI.
      ============================================================ */
   :root {
     --ink: #151515;
     --body: #4A5257;
     --teal: #1E6F80;
-    --teal-soft: #5E95A1;
     --blue-100: #E4F3F8;
     --blue-200: #CDE8EE;
     --yellow: #F7DD7A;
@@ -38,25 +39,20 @@
     gap: clamp(40px, 6vw, 96px); align-items: center;
   }
 
-  /* ---------- wideo ---------- */
-  .how__media { position: relative; display: flex; justify-content: center; }
+  /* ---------- telefon ---------- */
+  .how__media { position: relative; display: flex; justify-content: center; padding: 24px 0; }
   .how__glow {
-    position: absolute; inset: -12% -18%; border-radius: 50%; z-index: 0;
+    position: absolute; left: 50%; top: 50%; width: 560px; height: 760px; z-index: 0;
+    transform: translate(-50%, -50%); border-radius: 50%;
     background: radial-gradient(ellipse at 50% 45%, var(--blue-200) 0%, rgba(205,232,238,.55) 40%, rgba(205,232,238,0) 72%);
-    filter: blur(28px);
+    filter: blur(28px); pointer-events: none;
   }
-  .how__shadow {
-    position: absolute; left: 12%; right: 12%; bottom: -26px; height: 60px; z-index: 0;
-    border-radius: 50%; background: rgba(30,60,70,.22); filter: blur(22px);
+  .how__floor {
+    position: absolute; left: 50%; bottom: 6px; width: 380px; height: 70px; z-index: 0;
+    transform: translateX(-50%); border-radius: 50%;
+    background: rgba(30,60,70,.24); filter: blur(24px); pointer-events: none;
   }
-  .how__video {
-    position: relative; z-index: 1; display: block;
-    width: min(100%, 380px); aspect-ratio: 9 / 16; object-fit: cover;
-    border-radius: 36px; background: #0B1015;
-    box-shadow:
-      0 30px 60px -20px rgba(20, 50, 60, .35),
-      0 0 0 1px rgba(20, 50, 60, .06);
-  }
+  .how__media .phone-embed { position: relative; z-index: 1; }
 
   /* ---------- treść ---------- */
   .how__eyebrow {
@@ -74,10 +70,8 @@
 
   .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 36px; }
   .step { position: relative; display: grid; grid-template-columns: 96px 1fr; gap: 28px; align-items: center; }
-  /* linia osi między kółkami */
   .step:not(:last-child)::after {
-    content: ""; position: absolute; left: 47px; top: 96px; width: 2px; height: 36px;
-    background: var(--teal);
+    content: ""; position: absolute; left: 47px; top: 96px; width: 2px; height: 36px; background: var(--teal);
   }
   .step__icon {
     width: 96px; height: 96px; border-radius: 50%; background: var(--blue-100);
@@ -92,29 +86,45 @@
   @media (max-width: 860px) {
     .how__inner { grid-template-columns: 1fr; gap: 56px; }
     .how__media { order: 2; }
-    .how__video { width: min(100%, 320px); }
+    .how__media .phone-embed { zoom: .68; }
+    .how__glow { width: 480px; height: 640px; }
     .step { grid-template-columns: 72px 1fr; gap: 20px; }
     .step__icon { width: 72px; height: 72px; }
     .step__icon svg { width: 34px; height: 34px; }
     .step:not(:last-child)::after { left: 35px; top: 72px; }
   }
+  @media (max-width: 400px) { .how__media .phone-embed { zoom: .6; } }
+
+  /* ---------- ekrany aplikacji i mockup (wklejane przez build) ---------- */
+  <!-- @css -->
 </style>
 </head>
 <body>
+
+<!-- @icons -->
 
 <section class="how" aria-labelledby="how-title">
   <div class="how__inner">
 
     <div class="how__media">
       <div class="how__glow" aria-hidden="true"></div>
-      <div class="how__shadow" aria-hidden="true"></div>
-      <video class="how__video" id="howVideo"
-             poster="export/harmonogram-promo-poster.jpg"
-             autoplay muted loop playsinline preload="metadata"
-             aria-label="Animacja aplikacji Harmonogram wywozu śmieci: wybór adresu, terminy odbioru, ustawienie przypomnienia">
-        <source src="export/harmonogram-promo.mp4" type="video/mp4">
-        <source src="export/harmonogram-promo.webm" type="video/webm">
-      </video>
+      <div class="how__floor" aria-hidden="true"></div>
+
+      <div class="phone-embed" id="phoneEmbed" role="img"
+           aria-label="Animacja aplikacji Harmonogram wywozu śmieci: wybór adresu, terminy odbioru, ustawienie przypomnienia">
+        <div class="phone">
+          <div class="phone__btn phone__btn--action"></div>
+          <div class="phone__btn phone__btn--volup"></div>
+          <div class="phone__btn phone__btn--voldn"></div>
+          <div class="phone__btn phone__btn--power"></div>
+          <div class="phone__body"></div>
+          <div class="phone__shine"></div>
+          <div class="phone__glass"></div>
+          <!-- @screens -->
+          <div class="phone__island"></div>
+          <div class="phone__gloss"></div>
+        </div>
+      </div>
     </div>
 
     <div class="how__content">
@@ -170,14 +180,7 @@
 </section>
 
 <script>
-  // Film gra tylko, gdy sekcja jest w kadrze — oszczędza baterię i nie „miga” poza ekranem.
-  (() => {
-    const v = document.getElementById('howVideo');
-    if (!v || !('IntersectionObserver' in window)) return;
-    new IntersectionObserver(entries => {
-      for (const e of entries) e.isIntersecting ? v.play().catch(() => {}) : v.pause();
-    }, { threshold: .25 }).observe(v);
-  })();
+<!-- @js -->
 </script>
 
 </body>

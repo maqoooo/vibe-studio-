@@ -256,7 +256,7 @@
 .s3 .body { position: absolute; top: 146px; left: 20px; right: 20px; display: grid; gap: 14px; }
 .s3 .master { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 .s3 .master__title { font-size: 16px; font-weight: 700; line-height: 1.25; }
-.s3 .master__sub { font-size: 13px; color: var(--teal); margin-top: 3px; }
+.s3 .master__sub { font-size: 13px; color: var(--teal); margin-top: 3px; white-space: nowrap; }
 .s3 .types { padding: 16px 18px 8px; }
 .s3 .types .eyebrow { padding-bottom: 8px; border-bottom: 1px solid rgba(46,126,140,.10); }
 .s3 .row {
