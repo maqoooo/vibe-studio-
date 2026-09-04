@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jak to działa — Harmonogram wywozu śmieci</title>
+<!-- Poppins lokalnie (ten sam krój co w animacji). Bez tego pliku sekcja
+     działa dalej na krojach systemowych. -->
+<link rel="stylesheet" href="assets/fonts.css">
+<style>
+  /* ============================================================
+     Sekcja „Jak to działa” — samodzielny blok do wklejenia na stronę.
+     Lewa kolumna: animacja promo (MP4) w zaokrąglonej ramce z poświatą.
+     Prawa kolumna: nagłówek + trzy kroki na pionowej osi.
+     ============================================================ */
+  :root {
+    --ink: #151515;
+    --body: #4A5257;
+    --teal: #1E6F80;
+    --teal-soft: #5E95A1;
+    --blue-100: #E4F3F8;
+    --blue-200: #CDE8EE;
+    --yellow: #F7DD7A;
+    --f: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: var(--f); color: var(--ink); background: #fff; -webkit-font-smoothing: antialiased; }
+
+  .how {
+    position: relative; overflow: hidden;
+    padding: clamp(56px, 8vw, 112px) clamp(20px, 5vw, 72px);
+    background: linear-gradient(180deg, #fff 0%, #FAFDFE 100%);
+  }
+  .how__inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(40px, 6vw, 96px); align-items: center;
+  }
+
+  /* ---------- wideo ---------- */
+  .how__media { position: relative; display: flex; justify-content: center; }
+  .how__glow {
+    position: absolute; inset: -12% -18%; border-radius: 50%; z-index: 0;
+    background: radial-gradient(ellipse at 50% 45%, var(--blue-200) 0%, rgba(205,232,238,.55) 40%, rgba(205,232,238,0) 72%);
+    filter: blur(28px);
+  }
+  .how__shadow {
+    position: absolute; left: 12%; right: 12%; bottom: -26px; height: 60px; z-index: 0;
+    border-radius: 50%; background: rgba(30,60,70,.22); filter: blur(22px);
+  }
+  .how__video {
+    position: relative; z-index: 1; display: block;
+    width: min(100%, 380px); aspect-ratio: 9 / 16; object-fit: cover;
+    border-radius: 36px; background: #0B1015;
+    box-shadow:
+      0 30px 60px -20px rgba(20, 50, 60, .35),
+      0 0 0 1px rgba(20, 50, 60, .06);
+  }
+
+  /* ---------- treść ---------- */
+  .how__eyebrow {
+    margin: 0 0 14px; font-size: 14px; font-weight: 700; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--teal);
+  }
+  .how__title {
+    margin: 0 0 20px; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.15;
+    font-weight: 700; letter-spacing: -.02em;
+  }
+  .how__lead {
+    margin: 0 0 40px; max-width: 560px; font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.55; color: var(--body);
+  }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 36px; }
+  .step { position: relative; display: grid; grid-template-columns: 96px 1fr; gap: 28px; align-items: center; }
+  /* linia osi między kółkami */
+  .step:not(:last-child)::after {
+    content: ""; position: absolute; left: 47px; top: 96px; width: 2px; height: 36px;
+    background: var(--teal);
+  }
+  .step__icon {
+    width: 96px; height: 96px; border-radius: 50%; background: var(--blue-100);
+    display: grid; place-items: center; color: var(--teal);
+  }
+  .step--accent .step__icon { background: var(--yellow); }
+  .step__icon svg { width: 44px; height: 44px; display: block; }
+  .step__title { margin: 0 0 6px; font-size: clamp(18px, 1.5vw, 21px); font-weight: 700; }
+  .step__text { margin: 0; font-size: clamp(15px, 1.2vw, 17px); line-height: 1.5; color: var(--body); }
+
+  /* ---------- mobile ---------- */
+  @media (max-width: 860px) {
+    .how__inner { grid-template-columns: 1fr; gap: 56px; }
+    .how__media { order: 2; }
+    .how__video { width: min(100%, 320px); }
+    .step { grid-template-columns: 72px 1fr; gap: 20px; }
+    .step__icon { width: 72px; height: 72px; }
+    .step__icon svg { width: 34px; height: 34px; }
+    .step:not(:last-child)::after { left: 35px; top: 72px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="how" aria-labelledby="how-title">
+  <div class="how__inner">
+
+    <div class="how__media">
+      <div class="how__glow" aria-hidden="true"></div>
+      <div class="how__shadow" aria-hidden="true"></div>
+      <video class="how__video" id="howVideo"
+             poster="export/harmonogram-promo-poster.jpg"
+             autoplay muted loop playsinline preload="metadata"
+             aria-label="Animacja aplikacji Harmonogram wywozu śmieci: wybór adresu, terminy odbioru, ustawienie przypomnienia">
+        <source src="export/harmonogram-promo.mp4" type="video/mp4">
+        <source src="export/harmonogram-promo.webm" type="video/webm">
+      </video>
+    </div>
+
+    <div class="how__content">
+      <p class="how__eyebrow">Jak to działa</p>
+      <h2 class="how__title" id="how-title">Harmonogram zawsze pod ręką</h2>
+      <p class="how__lead">Wystarczą trzy proste kroki, aby zawsze pamiętać o&nbsp;terminie odbioru odpadów.</p>
+
+      <ol class="steps">
+        <li class="step">
+          <div class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M24 44s-15-14.6-15-25a15 15 0 0 1 30 0c0 10.4-15 25-15 25Z"/>
+              <circle cx="24" cy="19" r="5.5"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="step__title">Wybierz adres</h3>
+            <p class="step__text">Wpisz ulicę lub wybierz zapisany adres.</p>
+          </div>
+        </li>
+
+        <li class="step step--accent">
+          <div class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="7" y="10" width="34" height="31" rx="4"/>
+              <path d="M7 19h34M16 6v8M32 6v8"/>
+              <circle cx="32" cy="32" r="6.5" fill="var(--yellow)"/>
+              <path d="M29 32l2.2 2.2L35.5 30"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="step__title">Sprawdź termin</h3>
+            <p class="step__text">Zobacz najbliższe daty odbioru każdej frakcji.</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 33V21a12 12 0 1 1 24 0v12l3 4H9l3-4Z"/>
+              <path d="M20 41a4 4 0 0 0 8 0"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="step__title">Ustaw powiadomienie</h3>
+            <p class="step__text">Wybierz rodzaj odpadów i&nbsp;godzinę przypomnienia.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // Film gra tylko, gdy sekcja jest w kadrze — oszczędza baterię i nie „miga” poza ekranem.
+  (() => {
+    const v = document.getElementById('howVideo');
+    if (!v || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(entries => {
+      for (const e of entries) e.isIntersecting ? v.play().catch(() => {}) : v.pause();
+    }, { threshold: .25 }).observe(v);
+  })();
+</script>
+
+</body>
+</html>

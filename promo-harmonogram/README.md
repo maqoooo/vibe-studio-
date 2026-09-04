@@ -13,9 +13,28 @@ promo-harmonogram/
 │   ├── screens.css       ← ekrany aplikacji (adres, harmonogram, powiadomienia)
 │   ├── timeline.js       ← OŚ CZASU: co, kiedy i jak się porusza
 │   ├── fonts.css + fonts/← Poppins (lokalnie, render nie zależy od internetu)
+├── sekcja-jak-to-dziala.html ← sekcja „Jak to działa” na stronę WWW z osadzonym filmem
 └── export/
-    ├── harmonogram-promo.mp4          ← gotowy film
+    ├── harmonogram-promo.mp4          ← gotowy film (H.264)
+    ├── harmonogram-promo.webm         ← ten sam film w VP9 (zapas dla przeglądarek bez H.264)
     └── harmonogram-promo-poster.jpg   ← klatka-okładka (ostatnia klatka)
+```
+
+## Sekcja „Jak to działa” (strona WWW)
+
+`sekcja-jak-to-dziala.html` to samodzielny blok do wklejenia na landing page:
+po lewej film w zaokrąglonej ramce z poświatą, po prawej nagłówek i trzy kroki
+(adres → termin → powiadomienie) na pionowej osi. Cały CSS jest w pliku,
+zewnętrzne są tylko fonty (`assets/fonts.css`) i pliki wideo z `export/`.
+Układ jest responsywny — poniżej 860 px kolumny układają się jedna pod drugą,
+film przechodzi pod tekst. Film odtwarza się bez dźwięku, w pętli i tylko
+wtedy, gdy jest w kadrze. Przenosząc sekcję na stronę, skopiuj katalogi
+`export/` i `assets/fonts*` albo popraw ścieżki w atrybutach `src`.
+
+Zapasowy WebM robi się z gotowego MP4:
+
+```bash
+ffmpeg -i export/harmonogram-promo.mp4 -c:v libvpx-vp9 -b:v 0 -crf 30 -row-mt 1 -an export/harmonogram-promo.webm
 ```
 
 ## Start
