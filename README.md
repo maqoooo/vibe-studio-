@@ -93,6 +93,20 @@ sam i nie zależy od internetu. Zmiana krojów: podmień listę w
 `scripts/fetch-fonts.mjs`, uruchom `node scripts/fetch-fonts.mjs`, popraw
 `--f-display` / `--f-sans` / `--f-script` w `assets/css/brand.css`.
 
+## Animacja promo „Harmonogram wywozu śmieci”
+
+W katalogu `promo-harmonogram/` leży osobny projekt: 15-sekundowa animacja
+aplikacji mobilnej w mockupie telefonu (9:16, 1080 × 1920, 30 kl./s) do
+publikacji jako Reel / TikTok / Short. Gotowy film: `promo-harmonogram/export/harmonogram-promo.mp4`.
+
+```bash
+npm run promo          # podgląd z suwakiem czasu
+npm run promo:render   # render do MP4 (Playwright + ffmpeg)
+```
+
+Szczegóły, przebieg sekunda po sekundzie i instrukcja zmian:
+[`promo-harmonogram/README.md`](promo-harmonogram/README.md).
+
 ## Uwagi
 
 - Logotypy partnerów (VIBE, Nad Zatoką, Tatarak, Highlander) są złożone

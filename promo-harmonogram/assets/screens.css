@@ -1,0 +1,295 @@
+/* ============================================================
+   Ekrany aplikacji „Harmonogram wywozu śmieci”
+   Odtworzone 1:1 z materiałów referencyjnych, w skali 1 pt = 1 px
+   (ekran 393 × 852 pt). Cały ekran skaluje się razem z telefonem.
+   ============================================================ */
+
+.screen {
+  position: absolute;
+  inset: 0;
+  width: 393px;
+  height: 852px;
+  background: var(--app-bg);
+  color: var(--ink);
+  font-family: var(--f-ui);
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+/* ekrany wjeżdżające z prawej rzucają miękki cień na poprzedni */
+.s2, .s3 { box-shadow: -24px 0 48px rgba(20, 60, 70, .22); }
+
+/* ---------- pasek statusu ---------- */
+.status {
+  position: absolute; top: 0; left: 0; right: 0; height: 54px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 32px 0 40px;
+  font-weight: 600; font-size: 17px; letter-spacing: -.01em;
+}
+.status__icons { display: flex; align-items: center; gap: 7px; }
+.status__icons svg { display: block; }
+
+/* ---------- wspólne ---------- */
+.card {
+  background: #fff; border-radius: 24px; padding: 18px 18px 16px;
+}
+.card--tint { background: var(--card-tint); }
+.eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--teal-soft);
+}
+.divider { height: 1px; background: rgba(46,126,140,.10); }
+
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: grid; place-items: center;
+}
+.icon-btn--light { background: rgba(255,255,255,.75); }
+.icon-btn--dark  { background: #151515; }
+
+.chevron-circle {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--card-tint); display: grid; place-items: center;
+  flex: none;
+}
+.chevron-circle svg { transition: none; }
+
+/* pastylki kategorii odpadów */
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 36px; padding: 0 14px 0 5px; border-radius: 18px;
+  font-weight: 700; font-size: 13px; letter-spacing: .02em;
+  background: var(--chip-bg); color: var(--chip-ink);
+}
+.chip__code {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 800; letter-spacing: 0;
+  background: var(--chip-dot); color: var(--chip-ink);
+}
+.chip--sz { --chip-bg: #DCEBC0; --chip-dot: #BDDA8E; --chip-ink: #4C6B2B; }
+.chip--pa { --chip-bg: #CBE6F2; --chip-dot: #9FD3E8; --chip-ink: #1F5B73; }
+.chip--bi { --chip-bg: #D6C7B8; --chip-dot: #B7A28E; --chip-ink: #4E3A2C; }
+.chip--pl { --chip-bg: #F8E9A0; --chip-dot: #F1D95E; --chip-ink: #6B5A12; }
+.chip--zm { --chip-bg: #DEE3E6; --chip-dot: #4A4A4A; --chip-ink: #333; }
+.chip--zm .chip__code { color: #fff; }
+
+/* kółko kategorii (ekran powiadomień) */
+.dot {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 10.5px; font-weight: 800;
+  background: var(--dot-bg); color: var(--dot-ink);
+}
+.dot--sz { --dot-bg: #C7E0A0; --dot-ink: #4C6B2B; }
+.dot--pa { --dot-bg: #A9D8EC; --dot-ink: #1F5B73; }
+.dot--bi { --dot-bg: #C2AE9B; --dot-ink: #4E3A2C; }
+.dot--pl { --dot-bg: #F3DB6C; --dot-ink: #6B5A12; }
+.dot--wg { --dot-bg: #DDE3E6; --dot-ink: #5C6B72; }
+.dot--po { --dot-bg: #F3C9B4; --dot-ink: #8C4A2E; }
+.dot--zm { --dot-bg: #4A4A4A; --dot-ink: #fff; }
+
+/* przełącznik — pozycja sterowana przez --on (0…1) z osi czasu */
+.toggle {
+  --on: 1;
+  position: relative; width: 52px; height: 30px; border-radius: 15px;
+  background: color-mix(in srgb, #151515 calc(var(--on) * 100%), #CFE3E8);
+  flex: none;
+}
+.toggle::after {
+  content: ""; position: absolute; top: 3px; left: 3px;
+  width: 24px; height: 24px; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.18);
+  transform: translateX(calc(var(--on) * 22px));
+}
+
+/* ---------- pasek gestu / kursor ---------- */
+.home-bar {
+  position: absolute; left: 50%; bottom: 8px; width: 134px; height: 5px;
+  border-radius: 3px; background: rgba(0,0,0,.35); transform: translateX(-50%);
+}
+
+/* ============================================================
+   EKRAN 1 — wybór adresu
+   ============================================================ */
+.s1 .close {
+  position: absolute; top: 68px; right: 22px;
+  width: 42px; height: 42px; border-radius: 50%; background: #151515;
+  display: grid; place-items: center;
+}
+.s1 .hero { position: absolute; left: 22px; right: 22px; top: 126px; }
+.s1 .hero h1 {
+  margin: 0; font-size: 34px; line-height: 1.12; font-weight: 800;
+  letter-spacing: -.02em;
+}
+.s1 .hero p {
+  margin: 14px 0 0; font-size: 15px; line-height: 1.4; color: var(--teal);
+}
+.s1 .search {
+  position: absolute; left: 20px; right: 20px; top: 278px; height: 58px;
+  background: #fff; border-radius: 29px; display: flex; align-items: center;
+  gap: 14px; padding: 0 24px; color: #7F8A8E; font-size: 17px; font-weight: 500;
+  box-shadow: 0 8px 24px rgba(46,126,140,.10);
+}
+.s1 .recent {
+  position: absolute; left: 20px; right: 20px; top: 350px;
+  background: rgba(255,255,255,.62); border-radius: 26px; padding: 16px 18px 6px;
+}
+.s1 .recent .eyebrow { margin-bottom: 8px; }
+.s1 .addr {
+  display: flex; align-items: center; gap: 12px; height: 64px;
+  border-top: 1px solid rgba(46,126,140,.10); border-radius: 16px;
+  padding: 0 4px; margin: 0 -4px;
+  position: relative;
+}
+.s1 .addr__icon {
+  width: 32px; height: 32px; border-radius: 10px; background: #CFE9EF;
+  display: grid; place-items: center; flex: none;
+}
+.s1 .addr__name { font-size: 16px; font-weight: 700; line-height: 1.2; }
+.s1 .addr__city { font-size: 13px; color: var(--teal-soft); line-height: 1.2; }
+.s1 .addr__go { margin-left: auto; color: var(--teal-soft); font-size: 18px; font-weight: 600; }
+
+/* stan „dotknięty” — sterowany z osi czasu */
+.s1 .addr__hl {
+  position: absolute; inset: -2px -8px; border-radius: 16px;
+  background: #F7E9A0; opacity: 0; z-index: -1;
+}
+
+.s1 .info {
+  position: absolute; left: 20px; right: 20px; top: 522px;
+  background: #F7E9A0; border-radius: 26px; padding: 18px 20px 18px 20px;
+  display: flex; gap: 14px; align-items: flex-start;
+  font-size: 14px; line-height: 1.42; font-weight: 500;
+}
+.s1 .info__i {
+  width: 26px; height: 26px; border-radius: 50%; background: #151515; color: #fff;
+  display: grid; place-items: center; font-weight: 800; font-size: 13px; flex: none;
+  margin-top: 2px;
+}
+.s1 .illustration { position: absolute; left: 0; right: 0; bottom: 0; height: 130px; }
+.s1 .illustration svg { display: block; width: 100%; height: 100%; }
+
+/* ============================================================
+   EKRAN 2 — harmonogram
+   ============================================================ */
+.s2 .header {
+  position: absolute; top: 84px; left: 20px; right: 20px; height: 40px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.s2 .header h2 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
+.s2 .bell { position: relative; }
+.s2 .bell__badge {
+  position: absolute; top: -4px; right: -4px; width: 20px; height: 20px;
+  border-radius: 50%; background: #E53935; color: #fff; font-size: 11px; font-weight: 700;
+  display: grid; place-items: center; border: 2px solid var(--app-bg);
+}
+.s2 .bell__pulse {
+  position: absolute; inset: -6px; border-radius: 50%;
+  border: 3px solid #F5D66B; opacity: 0; pointer-events: none;
+}
+.s2 .addr-row {
+  position: absolute; top: 144px; left: 20px; display: flex; align-items: center; gap: 12px;
+}
+.s2 .addr-pill {
+  background: #F7E9A0; border-radius: 16px; padding: 9px 16px;
+  font-size: 15px; font-weight: 700;
+}
+.s2 .addr-change { font-size: 14px; font-weight: 500; color: var(--teal); }
+.s2 .list-label { position: absolute; top: 206px; left: 22px; }
+
+.s2 .scroller {
+  position: absolute; top: 230px; left: 0; right: 0; bottom: 0; overflow: hidden;
+}
+.s2 .list { padding: 0 20px 120px; display: grid; gap: 12px; will-change: transform; }
+.s2 .day { padding: 18px 18px 14px; }
+.s2 .day--today { box-shadow: inset 5px 0 0 #F5D66B; }
+.s2 .day__head { display: flex; align-items: baseline; gap: 10px; padding-bottom: 12px; }
+.s2 .day__tag { font-size: 11.5px; font-weight: 700; letter-spacing: .14em; color: var(--teal-soft); }
+.s2 .day__tag--today { color: #D9B640; }
+.s2 .day__num { font-size: 30px; font-weight: 700; line-height: 1; letter-spacing: -.02em; }
+.s2 .day__month { font-size: 16px; font-weight: 600; }
+.s2 .day__items { border-top: 1px solid rgba(46,126,140,.10); }
+.s2 .item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0 0; }
+.s2 .item + .item { margin-top: 10px; border-top: 1px solid rgba(46,126,140,.08); }
+.s2 .item--pad { padding-bottom: 6px; }
+
+/* rozwijana lista kolejnych terminów */
+.s2 .next {
+  display: flex; align-items: center; gap: 8px; overflow: hidden;
+  height: 0; opacity: 0; margin-top: 0;
+  font-size: 12.5px; font-weight: 600; color: var(--teal);
+}
+.s2 .next__chip {
+  background: #fff; border-radius: 10px; padding: 6px 11px;
+  font-size: 12.5px; font-weight: 600; color: var(--ink); white-space: nowrap;
+}
+.s2 .next__chip b { color: var(--teal-soft); font-weight: 600; }
+
+.s2 .download {
+  position: absolute; left: 20px; right: 20px; bottom: 30px; height: 58px;
+  border-radius: 29px; background: #151515; color: #fff;
+  display: grid; place-items: center; font-size: 14px; font-weight: 700;
+  letter-spacing: .16em; box-shadow: 0 14px 30px rgba(0,0,0,.18);
+}
+.s2 .fade-top {
+  position: absolute; left: 0; right: 0; top: 230px; height: 22px;
+  background: linear-gradient(to bottom, var(--app-bg), rgba(205,232,238,0));
+  pointer-events: none;
+}
+.s2 .fade-bottom {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 140px;
+  background: linear-gradient(to bottom, rgba(205,232,238,0), var(--app-bg) 70%);
+  pointer-events: none;
+}
+
+/* ============================================================
+   EKRAN 3 — powiadomienia
+   ============================================================ */
+.s3 .header {
+  position: absolute; top: 84px; left: 20px; right: 20px; height: 40px;
+  display: flex; align-items: center;
+}
+.s3 .header h2 {
+  position: absolute; left: 0; right: 0; text-align: center; margin: 0;
+  font-size: 20px; font-weight: 700;
+}
+.s3 .body { position: absolute; top: 146px; left: 20px; right: 20px; display: grid; gap: 14px; }
+.s3 .master { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.s3 .master__title { font-size: 16px; font-weight: 700; line-height: 1.25; }
+.s3 .master__sub { font-size: 13px; color: var(--teal); margin-top: 3px; }
+.s3 .types { padding: 16px 18px 8px; }
+.s3 .types .eyebrow { padding-bottom: 8px; border-bottom: 1px solid rgba(46,126,140,.10); }
+.s3 .row {
+  display: flex; align-items: center; gap: 14px; height: 50px;
+  border-bottom: 1px solid rgba(46,126,140,.08);
+}
+.s3 .row:last-child { border-bottom: 0; }
+.s3 .row__name { font-size: 14px; font-weight: 600; letter-spacing: .01em; flex: 1; }
+.s3 .hours__title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+.s3 .hours__grid {
+  position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.s3 .hour {
+  height: 44px; border-radius: 22px; background: #E3F1F4; color: var(--teal);
+  display: grid; place-items: center; font-size: 15px; font-weight: 700;
+  position: relative; /* bez z-index — napis (z-index 3) ma być nad pastylką */
+}
+/* czarna pastylka „morfuje” między godzinami — nad tłem przycisków, pod napisami */
+.s3 .hour-marker {
+  position: absolute; top: 0; left: 0; height: 44px; border-radius: 22px;
+  background: #151515; width: calc((100% - 20px) / 3); z-index: 2;
+}
+.s3 .hour span { position: relative; z-index: 3; }
+
+/* toast potwierdzenia (snackbar u dołu ekranu) */
+.toast {
+  position: absolute; left: 50%; bottom: 22px; transform: translate(-50%, 30px);
+  display: flex; align-items: center; gap: 10px;
+  background: #151515; color: #fff; border-radius: 22px; padding: 12px 18px 12px 12px;
+  font-size: 14px; font-weight: 600; white-space: nowrap; opacity: 0;
+  box-shadow: 0 16px 36px rgba(0,0,0,.28);
+}
+.toast__check {
+  width: 24px; height: 24px; border-radius: 50%; background: #B7DA8A;
+  display: grid; place-items: center;
+}

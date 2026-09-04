@@ -1,0 +1,187 @@
+/* ============================================================
+   Scena promo — kadr 1080 × 1920 (9:16), tło studyjne, telefon 3D,
+   napisy końcowe. Wszystkie wartości ruchu ustawia timeline.js,
+   tu są tylko style „spoczynkowe”.
+   ============================================================ */
+
+:root {
+  --f-ui: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  /* paleta interfejsu aplikacji */
+  --app-bg: #CDE8EE;
+  --card-tint: #EAF6F8;
+  --ink: #141414;
+  --teal: #2E7E8C;
+  --teal-soft: #5E95A1;
+  --yellow: #F5D66B;
+
+  /* scena */
+  --stage-bg: #0B1015;
+}
+
+html, body { margin: 0; padding: 0; background: #000; }
+body { font-family: var(--f-ui); -webkit-font-smoothing: antialiased; }
+
+.stage {
+  position: relative; width: 1080px; height: 1920px; overflow: hidden;
+  background: var(--stage-bg); color: #fff;
+}
+
+/* ---------- tło: światło studyjne, bokeh, winieta ---------- */
+.bg { position: absolute; inset: 0; }
+.bg__glow {
+  position: absolute; border-radius: 50%; filter: blur(90px); opacity: .9;
+}
+.bg__glow--key {
+  width: 1300px; height: 1300px; left: -200px; top: -420px;
+  background: radial-gradient(circle, rgba(88,160,178,.42), rgba(88,160,178,0) 65%);
+}
+.bg__glow--fill {
+  width: 1000px; height: 1000px; right: -420px; bottom: -160px;
+  background: radial-gradient(circle, rgba(245,214,107,.16), rgba(245,214,107,0) 65%);
+}
+.bg__glow--rim {
+  width: 900px; height: 900px; right: -300px; top: 220px;
+  background: radial-gradient(circle, rgba(160,200,215,.14), rgba(160,200,215,0) 65%);
+}
+.bg__bokeh {
+  position: absolute; border-radius: 50%; filter: blur(14px);
+  background: radial-gradient(circle, rgba(255,255,255,.14), rgba(255,255,255,0) 70%);
+}
+.bg__vignette {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 45%, rgba(0,0,0,0) 45%, rgba(0,0,0,.55) 100%);
+}
+.bg__floor {
+  position: absolute; left: 50%; bottom: 0; width: 1400px; height: 700px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 100%, rgba(120,170,185,.22), rgba(120,170,185,0) 60%);
+  filter: blur(30px);
+}
+
+/* ---------- kamera i telefon ---------- */
+.camera {
+  position: absolute; left: 50%; top: 50%; width: 0; height: 0; will-change: transform;
+}
+.rig { position: absolute; left: 0; top: 0; will-change: transform; }
+/* zoom (a nie transform) powiększa układ telefonu — tekst rasteryzuje się
+   ostro w docelowej wielkości; timeline.js skaluje już tylko wokół 1.0 */
+.zoom { position: absolute; left: 0; top: 0; zoom: 1.72; }
+.phone {
+  position: absolute; left: -215px; top: -466px; width: 430px; height: 932px;
+  will-change: transform, opacity;
+}
+
+/* korpus — tytanowa ramka z gradientem światła */
+.phone__body {
+  position: absolute; inset: 0; border-radius: 70px;
+  background:
+    linear-gradient(160deg, #5b6068 0%, #2b2e33 22%, #171a1e 50%, #2c3035 78%, #62676f 100%);
+  box-shadow:
+    0 0 0 1.5px rgba(255,255,255,.10),
+    inset 0 0 0 1px rgba(0,0,0,.6);
+}
+/* subtelny rozbłysk na krawędzi ramki */
+.phone__shine {
+  position: absolute; inset: 0; border-radius: 70px; pointer-events: none;
+  background: linear-gradient(115deg, rgba(255,255,255,.0) 30%, rgba(255,255,255,.22) 50%, rgba(255,255,255,0) 70%);
+  background-size: 300% 100%; background-position: 100% 0;
+  mix-blend-mode: screen; opacity: .8;
+  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  -webkit-mask-composite: xor; mask-composite: exclude; padding: 4px;
+}
+/* czarna szyba/bezel */
+.phone__glass {
+  position: absolute; inset: 5px; border-radius: 66px; background: #050607;
+}
+/* ekran */
+.phone__screen {
+  position: absolute; left: 18.5px; top: 40px; width: 393px; height: 852px;
+  border-radius: 56px; overflow: hidden; background: var(--app-bg);
+  transform: translateZ(0.01px);
+}
+/* Dynamic Island */
+.phone__island {
+  position: absolute; left: 50%; top: 52px; width: 126px; height: 37px;
+  border-radius: 20px; background: #000; transform: translateX(-50%) translateZ(0.02px);
+  z-index: 5;
+}
+.phone__island::after {
+  content: ""; position: absolute; right: 12px; top: 12px; width: 13px; height: 13px;
+  border-radius: 50%; background: radial-gradient(circle at 40% 40%, #1d2733, #05070a 70%);
+}
+/* odbicie na szkle */
+.phone__gloss {
+  position: absolute; inset: 5px; border-radius: 66px; pointer-events: none; z-index: 6;
+  background:
+    linear-gradient(112deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.05) 28%, rgba(255,255,255,0) 46%),
+    linear-gradient(290deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 30%);
+  mix-blend-mode: screen;
+}
+
+/* boki telefonu (grubość) — płaskie paski, szerokość ustawia timeline.js
+   w zależności od kąta obrotu (imitacja bryły bez preserve-3d) */
+.phone__edge {
+  position: absolute; z-index: -1;
+  background: linear-gradient(180deg, #55595f, #2a2d32 30%, #1b1d21 70%, #3a3e45);
+}
+.phone__edge--r { top: 44px; bottom: 44px; right: 0; width: 0;
+  border-radius: 0 16px 16px 0; transform: translateX(100%); }
+.phone__edge--b { left: 44px; right: 44px; bottom: 0; height: 0;
+  border-radius: 0 0 16px 16px; transform: translateY(100%);
+  background: linear-gradient(90deg, #3a3e45, #23262b 30%, #23262b 70%, #3a3e45); }
+
+/* przyciski boczne */
+.phone__btn {
+  position: absolute; width: 4px; border-radius: 2px; background: #3b3f46;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.phone__btn--action { left: -4px; top: 200px; height: 36px; }
+.phone__btn--volup  { left: -4px; top: 262px; height: 66px; }
+.phone__btn--voldn  { left: -4px; top: 342px; height: 66px; }
+.phone__btn--power  { right: -4px; top: 290px; height: 100px; }
+
+/* cień pod telefonem */
+.phone__shadow {
+  position: absolute; left: -290px; top: 330px; width: 580px; height: 220px;
+  border-radius: 50%; background: rgba(0,0,0,.62); filter: blur(48px);
+}
+
+/* ---------- gest dotknięcia ---------- */
+.touch {
+  position: absolute; left: 0; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px;
+  z-index: 20; opacity: 0; pointer-events: none; will-change: transform, opacity;
+}
+.touch__dot {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.92), rgba(255,255,255,.55) 60%, rgba(255,255,255,.2));
+  box-shadow: 0 6px 18px rgba(0,0,0,.25), 0 0 0 2px rgba(255,255,255,.35);
+  will-change: transform;
+}
+.touch__ring {
+  position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(255,255,255,.9);
+  opacity: 0; transform: scale(1);
+}
+
+/* ---------- napisy końcowe ---------- */
+.outro {
+  position: absolute; left: 90px; right: 90px; top: 250px; opacity: 0;
+  will-change: transform, opacity;
+}
+.outro__kicker {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 22px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.62); margin-bottom: 28px;
+}
+.outro__kicker::before {
+  content: ""; width: 44px; height: 4px; border-radius: 2px; background: var(--yellow);
+}
+.outro h1 {
+  margin: 0; font-size: 84px; line-height: 1.06; font-weight: 800; letter-spacing: -.025em;
+}
+.outro h1 em { font-style: normal; color: var(--yellow); }
+.outro p {
+  margin: 28px 0 0; font-size: 36px; line-height: 1.35; font-weight: 400;
+  color: rgba(255,255,255,.78);
+}

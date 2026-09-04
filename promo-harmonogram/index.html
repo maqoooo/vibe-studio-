@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Harmonogram wywozu śmieci — animacja promo (9:16)</title>
+<meta name="viewport" content="width=1080">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/scene.css">
+<link rel="stylesheet" href="assets/screens.css">
+<style>
+  /* podgląd w przeglądarce: dopasuj kadr do okna (render ignoruje — używa ?raw=1) */
+  body.preview { display: grid; place-items: center; min-height: 100vh; background: #000; }
+  body.preview .stage { transform-origin: center; }
+  .hud {
+    position: fixed; left: 16px; bottom: 16px; z-index: 99; font: 500 13px/1 var(--f-ui);
+    color: #9ab; background: rgba(0,0,0,.55); padding: 8px 12px; border-radius: 10px;
+    display: flex; gap: 14px; align-items: center; user-select: none;
+  }
+  .hud b { color: #fff; font-variant-numeric: tabular-nums; }
+  .hud input { width: 240px; }
+  .hud[hidden] { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ikony SVG używane wielokrotnie -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-pin" viewBox="0 0 24 24">
+      <path d="M12 2a7 7 0 0 0-7 7c0 4.6 7 13 7 13s7-8.4 7-13a7 7 0 0 0-7-7Z" fill="none" stroke="currentColor" stroke-width="2.2"/>
+      <circle cx="12" cy="9" r="2.6" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    </symbol>
+    <symbol id="i-chev-down" viewBox="0 0 24 24">
+      <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-chev-left" viewBox="0 0 24 24">
+      <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24">
+      <path d="M6 17V11a6 6 0 1 1 12 0v6l1.5 2H4.5L6 17Z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/>
+      <path d="M10 21h4" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-status" viewBox="0 0 78 14">
+      <!-- zasięg -->
+      <rect x="0" y="9" width="3.5" height="5" rx="1" fill="currentColor"/>
+      <rect x="5.5" y="6.5" width="3.5" height="7.5" rx="1" fill="currentColor"/>
+      <rect x="11" y="3.5" width="3.5" height="10.5" rx="1" fill="currentColor"/>
+      <rect x="16.5" y="0.5" width="3.5" height="13.5" rx="1" fill="currentColor"/>
+      <!-- wifi -->
+      <path d="M26 5.2a11 11 0 0 1 14.8 0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M28.8 8.4a7 7 0 0 1 9.2 0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="33.4" cy="11.8" r="1.7" fill="currentColor"/>
+      <!-- bateria -->
+      <rect x="48" y="1" width="26" height="12" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".45"/>
+      <rect x="50" y="3" width="22" height="8" rx="2" fill="currentColor"/>
+      <rect x="75.5" y="4.5" width="2" height="5" rx="1" fill="currentColor" opacity=".45"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="stage" id="stage">
+
+  <!-- tło studyjne -->
+  <div class="bg">
+    <div class="bg__glow bg__glow--key"></div>
+    <div class="bg__glow bg__glow--fill"></div>
+    <div class="bg__glow bg__glow--rim"></div>
+    <div class="bg__bokeh" style="left:120px;top:1260px;width:120px;height:120px"></div>
+    <div class="bg__bokeh" style="left:900px;top:380px;width:80px;height:80px;opacity:.6"></div>
+    <div class="bg__bokeh" style="left:820px;top:1500px;width:160px;height:160px;opacity:.45"></div>
+    <div class="bg__floor"></div>
+    <div class="bg__vignette"></div>
+  </div>
+
+  <!-- kamera → rig (pozycja/skala) → telefon (obrót 3D) -->
+  <div class="camera" id="camera">
+    <div class="rig" id="rig">
+      <div class="zoom">
+      <div class="phone__shadow" id="shadow"></div>
+      <div class="phone" id="phone">
+        <div class="phone__edge phone__edge--r" id="edgeR"></div>
+        <div class="phone__edge phone__edge--b" id="edgeB"></div>
+        <div class="phone__btn phone__btn--action"></div>
+        <div class="phone__btn phone__btn--volup"></div>
+        <div class="phone__btn phone__btn--voldn"></div>
+        <div class="phone__btn phone__btn--power"></div>
+        <div class="phone__body"></div>
+        <div class="phone__shine" id="shine"></div>
+        <div class="phone__glass"></div>
+
+        <div class="phone__screen" id="screenWrap">
+
+          <!-- ================= EKRAN 1 · wybór adresu ================= -->
+          <section class="screen s1" id="s1">
+            <div class="status"><span>9:41</span><span class="status__icons"><svg width="78" height="14"><use href="#i-status"/></svg></span></div>
+
+            <div class="close" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 18 18">
+                <path d="M3 3l12 12" stroke="#F5D66B" stroke-width="3" stroke-linecap="round"/>
+                <path d="M15 3L3 15" stroke="#8FC7D9" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <div class="hero">
+              <h1>Harmonogram<br>wywozu śmieci</h1>
+              <p>Znajdź i pobierz dokładny harmonogram wywozu odpadów dla Twojej okolicy</p>
+            </div>
+
+            <div class="search">
+              <svg width="22" height="22" style="color:var(--teal)"><use href="#i-pin"/></svg>
+              <span>Wpisz ulicę</span>
+            </div>
+
+            <div class="recent">
+              <div class="eyebrow">Ostatnie adresy</div>
+              <div class="addr" id="addr1">
+                <div class="addr__hl" id="addr1hl"></div>
+                <div class="addr__icon"><svg width="18" height="18" style="color:var(--teal)"><use href="#i-pin"/></svg></div>
+                <div><div class="addr__name">Pimpickiego 16</div><div class="addr__city">Koszalin</div></div>
+                <div class="addr__go">›</div>
+              </div>
+              <div class="addr">
+                <div class="addr__icon"><svg width="18" height="18" style="color:var(--teal)"><use href="#i-pin"/></svg></div>
+                <div><div class="addr__name">Boenigka 24A</div><div class="addr__city">Koszalin</div></div>
+                <div class="addr__go">›</div>
+              </div>
+            </div>
+
+            <div class="info">
+              <div class="info__i">i</div>
+              <div>Po wybraniu adresu harmonogram zapisze się w&nbsp;Twojej gminie — znajdziesz go na ekranie głównym.</div>
+            </div>
+
+            <!-- ilustracja: budynki, śmieciarka, pojemniki -->
+            <div class="illustration">
+              <svg viewBox="0 0 393 130" preserveAspectRatio="xMidYMax meet">
+                <!-- budynek lewy -->
+                <rect x="22" y="38" width="44" height="86" rx="4" fill="#B9DCE3"/>
+                <rect x="30" y="50" width="10" height="10" fill="#E6F4F7"/><rect x="46" y="50" width="10" height="10" fill="#E6F4F7"/>
+                <rect x="30" y="68" width="10" height="10" fill="#E6F4F7"/><rect x="46" y="68" width="10" height="10" fill="#E6F4F7"/>
+                <rect x="72" y="70" width="26" height="3" rx="1.5" fill="#B9DCE3"/>
+                <rect x="72" y="82" width="26" height="3" rx="1.5" fill="#B9DCE3"/>
+                <rect x="72" y="94" width="26" height="3" rx="1.5" fill="#B9DCE3"/>
+                <!-- budynek prawy -->
+                <rect x="322" y="52" width="40" height="72" rx="4" fill="#B9DCE3"/>
+                <rect x="330" y="64" width="9" height="9" fill="#F3E4A8"/><rect x="345" y="64" width="9" height="9" fill="#F3E4A8"/>
+                <!-- śmieciarka -->
+                <g transform="translate(110 24)">
+                  <rect x="0" y="12" width="118" height="72" rx="10" fill="#C6E0A8" stroke="#141414" stroke-width="3"/>
+                  <line x1="30" y1="20" x2="30" y2="76" stroke="#141414" stroke-width="2" opacity=".35"/>
+                  <line x1="60" y1="20" x2="60" y2="76" stroke="#141414" stroke-width="2" opacity=".35"/>
+                  <circle cx="90" cy="46" r="17" fill="#E9F3DE" stroke="#141414" stroke-width="2.5"/>
+                  <path d="M82 47a8 8 0 0 1 12-7" fill="none" stroke="#5D8F3B" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M98 45a8 8 0 0 1-12 7" fill="none" stroke="#5D8F3B" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M92 36l4 4-5 2Z" fill="#5D8F3B"/><path d="M88 56l-4-4 5-2Z" fill="#5D8F3B"/>
+                  <path d="M118 40h24a10 10 0 0 1 10 10v34h-34Z" fill="#F3DF8C" stroke="#141414" stroke-width="3" stroke-linejoin="round"/>
+                  <rect x="124" y="46" width="18" height="16" rx="3" fill="#CFE9EF" stroke="#141414" stroke-width="2.5"/>
+                  <rect x="150" y="66" width="6" height="10" rx="2" fill="#141414"/>
+                  <circle cx="28" cy="88" r="12" fill="#fff" stroke="#141414" stroke-width="3"/><circle cx="28" cy="88" r="4" fill="#141414"/>
+                  <circle cx="96" cy="88" r="12" fill="#fff" stroke="#141414" stroke-width="3"/><circle cx="96" cy="88" r="4" fill="#141414"/>
+                  <circle cx="134" cy="88" r="12" fill="#fff" stroke="#141414" stroke-width="3"/><circle cx="134" cy="88" r="4" fill="#141414"/>
+                </g>
+                <!-- pojemniki -->
+                <rect x="282" y="82" width="22" height="34" rx="4" fill="#A9D8EC" stroke="#141414" stroke-width="3"/>
+                <rect x="279" y="78" width="28" height="6" rx="3" fill="#141414"/>
+                <rect x="308" y="92" width="18" height="24" rx="3" fill="#F3DF8C" stroke="#141414" stroke-width="3"/>
+                <rect x="306" y="88" width="22" height="5" rx="2.5" fill="#141414"/>
+                <!-- ziemia -->
+                <line x1="12" y1="124" x2="381" y2="124" stroke="#5E95A1" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="home-bar"></div>
+          </section>
+
+          <!-- ================= EKRAN 2 · harmonogram ================= -->
+          <section class="screen s2" id="s2">
+            <div class="status"><span>9:41</span><span class="status__icons"><svg width="78" height="14"><use href="#i-status"/></svg></span></div>
+
+            <div class="header">
+              <div class="icon-btn icon-btn--light"><svg width="18" height="18"><use href="#i-chev-left"/></svg></div>
+              <h2>Harmonogram śmieci</h2>
+              <div class="icon-btn icon-btn--dark bell" id="bell">
+                <div class="bell__pulse" id="bellPulse"></div>
+                <svg width="20" height="20" style="color:#F5D66B"><use href="#i-bell"/></svg>
+                <div class="bell__badge">4</div>
+              </div>
+            </div>
+
+            <div class="addr-row">
+              <div class="addr-pill">Pimpickiego 16</div>
+              <div class="addr-change">zmień adres</div>
+            </div>
+            <div class="eyebrow list-label">Najbliższe terminy odbioru</div>
+
+            <div class="scroller">
+              <div class="list" id="list">
+
+                <div class="card day day--today">
+                  <div class="day__head"><span class="day__tag day__tag--today">DZIŚ</span><span class="day__num">29</span><span class="day__month">Czerwiec</span></div>
+                  <div class="day__items">
+                    <div class="item item--pad"><span class="chip chip--sz"><span class="chip__code">SZ</span>SZKŁO</span><span class="chevron-circle"><svg width="14" height="14" style="color:var(--teal)"><use href="#i-chev-down"/></svg></span></div>
+                  </div>
+                </div>
+
+                <div class="card card--tint day">
+                  <div class="day__head"><span class="day__tag">JUTRO</span><span class="day__num">30</span><span class="day__month">Czerwiec</span></div>
+                  <div class="day__items">
+                    <div class="item"><span class="chip chip--pa"><span class="chip__code">PA</span>PAPIER</span><span class="chevron-circle"><svg width="14" height="14" style="color:var(--teal)"><use href="#i-chev-down"/></svg></span></div>
+                    <div class="item"><span class="chip chip--sz"><span class="chip__code">SZ</span>SZKŁO</span><span class="chevron-circle"><svg width="14" height="14" style="color:var(--teal)"><use href="#i-chev-down"/></svg></span></div>
+                    <div class="item item--pad"><span class="chip chip--bi"><span class="chip__code">BI</span>BIOODPADY</span><span class="chevron-circle"><svg width="14" height="14" style="color:var(--teal)"><use href="#i-chev-down"/></svg></span></div>
+                  </div>
+                </div>
+
+                <div class="card card--tint day" id="dayPlastik">
+                  <div class="day__head"><span class="day__tag">CZWARTEK</span><span class="day__num">7</span><span class="day__month">Lipiec</span></div>
+                  <div class="day__items">
+                    <div class="item item--pad" id="plastikItem">
+                      <span class="chip chip--pl" id="plastikChip"><span class="chip__code">PL</span>PLASTIK</span>
+                      <span class="chevron-circle" id="plastikChev"><svg width="14" height="14" style="color:var(--teal)"><use href="#i-chev-down"/></svg></span>
+                    </div>
+                    <div class="next" id="plastikNext">
+                      <span>Kolejne:</span>
+                      <span class="next__chip"><b>śr.</b> 7 lip</span>
+                      <span class="next__chip"><b>pt.</b> 18 lip</span>
+                      <span class="next__chip"><b>nd.</b> 24 lip</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card card--tint day">
+                  <div class="day__head"><span class="day__tag">CZWARTEK</span><span class="day__num">12</span><span class="day__month">Lipiec</span></div>
+                  <div class="day__items">
+                    <div class="item item--pad"><span class="chip chip--zm"><span class="chip__code">ZM</span>ODPADY ZMIESZANE</span><span class="chevron-circle"><svg width="14" height="14" style="color:var(--teal)"><use href="#i-chev-down"/></svg></span></div>
+                  </div>
+                </div>
+
+                <div class="card card--tint day">
+                  <div class="day__head"><span class="day__tag">PONIEDZIAŁEK</span><span class="day__num">16</span><span class="day__month">Lipiec</span></div>
+                  <div class="day__items">
+                    <div class="item"><span class="chip chip--pa"><span class="chip__code">PA</span>PAPIER</span><span class="chevron-circle"><svg width="14" height="14" style="color:var(--teal)"><use href="#i-chev-down"/></svg></span></div>
+                    <div class="item item--pad"><span class="chip chip--bi"><span class="chip__code">BI</span>BIOODPADY</span><span class="chevron-circle"><svg width="14" height="14" style="color:var(--teal)"><use href="#i-chev-down"/></svg></span></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="fade-top"></div>
+            <div class="fade-bottom"></div>
+            <div class="download">POBIERZ HARMONOGRAM</div>
+            <div class="home-bar"></div>
+          </section>
+
+          <!-- ================= EKRAN 3 · powiadomienia ================= -->
+          <section class="screen s3" id="s3">
+            <div class="status"><span>9:41</span><span class="status__icons"><svg width="78" height="14"><use href="#i-status"/></svg></span></div>
+
+            <div class="header">
+              <div class="icon-btn icon-btn--light"><svg width="18" height="18"><use href="#i-chev-left"/></svg></div>
+              <h2>Powiadomienia</h2>
+            </div>
+
+            <div class="body">
+              <div class="card master">
+                <div>
+                  <div class="master__title">Przypomnienia o wywozie</div>
+                  <div class="master__sub">Push wieczorem przed dniem odbioru</div>
+                </div>
+                <div class="toggle" id="tgMaster" style="--on:0"></div>
+              </div>
+
+              <div class="card types">
+                <div class="eyebrow">Rodzaje odpadów</div>
+                <div class="row"><span class="dot dot--sz">SZ</span><span class="row__name">SZKŁO</span><div class="toggle" id="tgSz" style="--on:0"></div></div>
+                <div class="row"><span class="dot dot--pa">PA</span><span class="row__name">PAPIER</span><div class="toggle" id="tgPa" style="--on:0"></div></div>
+                <div class="row"><span class="dot dot--bi">BI</span><span class="row__name">BIOODPADY</span><div class="toggle" id="tgBi" style="--on:0"></div></div>
+                <div class="row"><span class="dot dot--pl">PL</span><span class="row__name">PLASTIK</span><div class="toggle" id="tgPl" style="--on:0"></div></div>
+                <div class="row"><span class="dot dot--wg">WG</span><span class="row__name">WIELKOGABARYTOWE</span><div class="toggle" style="--on:0"></div></div>
+                <div class="row"><span class="dot dot--po">PO</span><span class="row__name">POPIÓŁ</span><div class="toggle" style="--on:0"></div></div>
+                <div class="row"><span class="dot dot--zm">ZM</span><span class="row__name">ODPADY ZMIESZANE</span><div class="toggle" id="tgZm" style="--on:0"></div></div>
+              </div>
+
+              <div class="card hours">
+                <div class="hours__title">Godzina przypomnienia</div>
+                <div class="hours__grid">
+                  <div class="hour-marker" id="hourMarker"></div>
+                  <div class="hour" id="h17"><span>17:00</span></div>
+                  <div class="hour" id="h19"><span>19:00</span></div>
+                  <div class="hour" id="h21"><span>21:00</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="toast" id="toast">
+              <span class="toast__check"><svg width="14" height="14" style="color:#141414"><use href="#i-check"/></svg></span>
+              Przypomnienie zostało ustawione
+            </div>
+            <div class="home-bar"></div>
+          </section>
+
+          <!-- gest dotknięcia (w układzie współrzędnych ekranu) -->
+          <div class="touch" id="touch"><div class="touch__dot" id="touchDot"></div><div class="touch__ring" id="touchRing"></div></div>
+        </div><!-- /phone__screen -->
+
+        <div class="phone__island"></div>
+        <div class="phone__gloss"></div>
+      </div><!-- /phone -->
+      </div><!-- /zoom -->
+    </div><!-- /rig -->
+  </div><!-- /camera -->
+
+  <!-- napisy końcowe -->
+  <div class="outro" id="outro">
+    <div class="outro__kicker">Harmonogram wywozu śmieci</div>
+    <h1>Twój harmonogram.<br><em>Zawsze pod ręką.</em></h1>
+    <p>Sprawdź terminy i ustaw przypomnienia.</p>
+  </div>
+
+</div><!-- /stage -->
+
+<div class="hud" id="hud" hidden>
+  <span>czas <b id="hudTime">0.00</b> s</span>
+  <input type="range" id="hudRange" min="0" max="15" step="0.01" value="0">
+  <button id="hudPlay">▶︎ / ❚❚</button>
+  <span>spacja = play/pauza · ←/→ = klatka</span>
+</div>
+
+<script src="assets/timeline.js"></script>
+</body>
+</html>
